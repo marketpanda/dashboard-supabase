@@ -29,9 +29,9 @@ const HomePage = () => {
   })
 
   const { mutateAsync: addRowPlaceMutation } = useMutation({
-    mutationFn: (params) => addPlaceRow<typeRow>(params),
+    mutationFn: (params) => addPlaceRow(params),
     onSuccess: () => {
-      queryClient.invalidateQueries(["getPlaces"])
+      queryClient.invalidateQueries()
     }
   })
 
@@ -157,7 +157,7 @@ const HomePage = () => {
   }
 
   const handleAddRow = (theRow: typeRow) => {
-    console.log(singleRow)
+    console.log(singleRow, theRow)
   }
   
   return (
@@ -178,7 +178,7 @@ const HomePage = () => {
 
           </CardHeader>
           <CardHeader>
-            <Input type="file" onChange={(e) => { 
+            <Input type="file" onChange={(e:any) => { 
               const file = e.target.files[0];
               readExcel(file) 
             }} />
