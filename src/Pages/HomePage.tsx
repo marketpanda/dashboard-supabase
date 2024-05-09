@@ -23,17 +23,17 @@ const HomePage = () => {
   }
 
   const queryClient = useQueryClient()
-  const { data, isLoading } = useQuery({
-    queryFn: () => fetchSample(),
-    queryKey: ["getPlaces"]
-  })
+  // const { data, isLoading } = useQuery({
+  //   queryFn: () => fetchSample(),
+  //   queryKey: ["getPlaces"]
+  // })
 
-  const { mutateAsync: addRowPlaceMutation } = useMutation({
-    mutationFn: (params) => addPlaceRow(params),
-    onSuccess: () => {
-      queryClient.invalidateQueries()
-    }
-  })
+  // const { mutateAsync: addRowPlaceMutation } = useMutation({
+  //   mutationFn: (params) => addPlaceRow(params),
+  //   onSuccess: () => {
+  //     queryClient.invalidateQueries()
+  //   }
+  // })
 
   useEffect(() => {
 
@@ -155,9 +155,9 @@ const HomePage = () => {
     console.log(singleRow)
   }
 
-  const handleAddRow = (theRow: typeRow) => {
-    console.log(singleRow, theRow)
-  }
+  // const handleAddRow = (theRow: typeRow) => {
+  //   console.log(singleRow, theRow)
+  // }
   
   return (
     <>
