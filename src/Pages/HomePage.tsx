@@ -41,8 +41,7 @@ const HomePage = () => {
 
       try {
         const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_ROOT}/places?destination=manila`) 
-        // const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_ROOT}/places?destination=manila`) 
-        // const response = await axios.get(`https://dummyjson.com/todos`) 
+      
         const data = response.data
   
         console.log(data)
@@ -169,14 +168,14 @@ const HomePage = () => {
           <CardTitle>Watatrip Bulk Upload</CardTitle>
         </CardHeader>
       
-          <CardHeader>
-            {
+          {/* <CardHeader>
+            {https://139.162.8.143:3002
               isLoading ?
                 <div>Loading...</div> : 
                 <div><pre>{ JSON.stringify(data, null, 2) }</pre></div>
             }
 
-          </CardHeader>
+          </CardHeader> */}
           <CardHeader>
             <Input type="file" onChange={(e:any) => { 
               const file = e.target.files[0];
@@ -232,7 +231,8 @@ const HomePage = () => {
                     <TableCell><Input value={row.img} onChange={(e) => handleInputChange(index, "img",  e.target.value)}  /> </TableCell>
                     <TableCell><Input value={row.imgs} onChange={(e) => handleInputChange(index, "imgs",  e.target.value)} /> </TableCell>
                     <TableCell><Input value={row.coords} onChange={(e) => handleInputChange(index, "coords",  e.target.value)}  /> </TableCell>
-                    <TableCell><Input value={row.coordsSpatial} onChange={(e) => handleInputChange(index, "coordsSpatial",  e.target.value)}  /> </TableCell>
+                    <TableCell>{JSON.stringify(row.coordsSpatial)} </TableCell>
+                    {/* <TableCell><Input value={row.coordsSpatial} onChange={(e) => handleInputChange(index, "coordsSpatial",  e.target.value)}  /> </TableCell> */}
                     <TableCell><Input value={row.contactNumber} onChange={(e) => handleInputChange(index, "contactNumber",  e.target.value)}  /> </TableCell> 
                   
                   </TableRow> 
@@ -250,7 +250,7 @@ const HomePage = () => {
                   </TableRow>
                
 
-                  <TableRow className='w-full bg-red-500'>
+                  {/* <TableRow className='w-full bg-red-500'>
                       <TableHead colSpan={4} className='text-right'>
 
                         <Button className='mr-2' onClick={() => handleAddRow(singleRow)}>Add</Button>
@@ -266,20 +266,20 @@ const HomePage = () => {
                         </Button>
                       </TableHead>
                     
-                  </TableRow>
+                  </TableRow> */}
                
             
             
           </TableBody>
 
         </Table>
-        <CardFooter className='w-full flex justify-end pt-4 border-4'>
+        <CardFooter className='w-full flex justify-end pt-4'>
 
           <Button onClick={handleBulkUpload} className='w-1/2'>Submit</Button>
         </CardFooter>
       </Card>
       <Card>
-        <CardContent>
+        <CardContent className='text-xs text-opacity-50'>
           <pre>
             { JSON.stringify(tableData, null, 2) }
           </pre>
