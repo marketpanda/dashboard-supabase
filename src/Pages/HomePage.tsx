@@ -7,8 +7,8 @@ import { useEffect, useState } from 'react'
 import { Input } from '../components/ui/input'
 
 //react query
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
-import { addPlaceRow, fetchSample } from '../api/api'
+// import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+// import { addPlaceRow, fetchSample } from '../api/api'
 
 const HomePage = () => {
 
@@ -16,13 +16,13 @@ const HomePage = () => {
 
   const [singleRow, setSingleRow] = useState<any>({})
 
-  type typeRow = {
-    name: string,
-    address: string,
-    coords: string
-  }
+  // type typeRow = {
+  //   name: string,
+  //   address: string,
+  //   coords: string
+  // }
 
-  const queryClient = useQueryClient()
+  // const queryClient = useQueryClient()
   // const { data, isLoading } = useQuery({
   //   queryFn: () => fetchSample(),
   //   queryKey: ["getPlaces"]
