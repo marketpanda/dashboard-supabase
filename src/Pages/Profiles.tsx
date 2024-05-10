@@ -7,7 +7,7 @@ const Profiles = () => {
   console.log(params)
   return (
     <div>
-      Profiles 
+       Profiles
       <Outlet />
     </div>
   )

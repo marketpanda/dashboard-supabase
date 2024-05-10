@@ -5,6 +5,17 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../compone
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
 import { useEffect, useState } from 'react'
 import { Input } from '../components/ui/input'
+import { Textarea } from "../components/ui/textarea"
+
+
+//plus code
+// const OpenLocationCode = require('open-location-code').OpenLocationCode;
+ 
+
+ 
+
+//npm i --save-dev @types/open-location-code
+//install for typescript
 
 //react query
 // import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -15,6 +26,12 @@ const HomePage = () => {
   const [tableData, setTableData] = useState<any>(null)
 
   const [singleRow, setSingleRow] = useState<any>({})
+
+
+  // https://www.geoapify.com/google-plus-code-as-a-location-code
+  
+  //H2PG+9H Mandaluyong, Metro Manila
+  
 
   // type typeRow = {
   //   name: string,
@@ -161,132 +178,133 @@ const HomePage = () => {
   
   return (
     <>
-    
-     
-      <Card> 
-        <CardHeader>
-          <CardTitle>Watatrip Bulk Upload</CardTitle>
-        </CardHeader>
-      
-          {/* <CardHeader>
-            {https://139.162.8.143:3002
-              isLoading ?
-                <div>Loading...</div> : 
-                <div><pre>{ JSON.stringify(data, null, 2) }</pre></div>
-            }
-
-          </CardHeader> */}
+      <div className='flex flex-col'>     
+        <div> 
           <CardHeader>
-            <Input type="file" onChange={(e:any) => { 
-              const file = e.target.files[0];
-              readExcel(file) 
-            }} />
-
+            <CardTitle>Watatrip Bulk Upload</CardTitle>
           </CardHeader>
          
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHead>Name</TableHead>
-              <TableHead>User Id</TableHead>
-              <TableHead>Address</TableHead>
-              <TableHead>Type</TableHead>
-              <TableHead>Location</TableHead>
-              <TableHead>City Province</TableHead>
-              <TableHead>City ID</TableHead>
-              <TableHead>Description</TableHead>
-              <TableHead>Email</TableHead>
-              <TableHead>Landmark</TableHead>
-              <TableHead>Must Try</TableHead>
-              <TableHead>Role</TableHead>
-              <TableHead>Img</TableHead>
-              <TableHead>Imgs</TableHead>
-              <TableHead>Coords</TableHead>
-              <TableHead>Coords Spatial</TableHead>
-              <TableHead>Contact Number</TableHead>
-              {/*
-                name, address, type, location, cityProvince, cityId, description, email, landmark, mustTry, role, img, imgs, coords, coordsSpatial, contactNumber
-              */}
-            </TableRow>
-          </TableHeader> 
-          <TableBody>
-            {
-              tableData ?
-                tableData.map((row:any, index:number) => (
-                  
-                  <TableRow>  
-
-                    <TableCell><Input value={row.name} onChange={(e) => handleInputChange(index, "name",  e.target.value)} /> </TableCell>
-                    <TableCell><Input value={row.userId} onChange={(e) => handleInputChange(index, "userId",  e.target.value)} /> </TableCell>
-                    <TableCell><Input value={row.address} onChange={(e) => handleInputChange(index, "address",  e.target.value)}  /> </TableCell>
-                    <TableCell><Input value={row.type} onChange={(e) => handleInputChange(index, "type",  e.target.value)}  /> </TableCell>
-                    <TableCell><Input value={row.location} onChange={(e) => handleInputChange(index, "location",  e.target.value)} /> </TableCell>
-                    <TableCell><Input value={row.cityProvince} onChange={(e) => handleInputChange(index, "cityProvince",  e.target.value)}  /> </TableCell>
-                    <TableCell><Input value={row.cityId} onChange={(e) => handleInputChange(index, "cityId",  e.target.value)}  /> </TableCell>
-                    <TableCell><Input value={row.description} onChange={(e) => handleInputChange(index, "description",  e.target.value)} /> </TableCell>
-                    <TableCell><Input value={row.email} onChange={(e) => handleInputChange(index, "email",  e.target.value)}  /> </TableCell>
-                    <TableCell><Input value={row.landmark} onChange={(e) => handleInputChange(index, "landmark",  e.target.value)}  /> </TableCell>
-                    <TableCell><Input value={row.mustTry} onChange={(e) => handleInputChange(index, "mustTry",  e.target.value)} /> </TableCell>
-                    <TableCell><Input value={row.role} onChange={(e) => handleInputChange(index, "role",  e.target.value)}  /> </TableCell>
-                    <TableCell><Input value={row.img} onChange={(e) => handleInputChange(index, "img",  e.target.value)}  /> </TableCell>
-                    <TableCell><Input value={row.imgs} onChange={(e) => handleInputChange(index, "imgs",  e.target.value)} /> </TableCell>
-                    <TableCell><Input value={row.coords} onChange={(e) => handleInputChange(index, "coords",  e.target.value)}  /> </TableCell>
-                    <TableCell>{JSON.stringify(row.coordsSpatial)} </TableCell>
-                    {/* <TableCell><Input value={row.coordsSpatial} onChange={(e) => handleInputChange(index, "coordsSpatial",  e.target.value)}  /> </TableCell> */}
-                    <TableCell><Input value={row.contactNumber} onChange={(e) => handleInputChange(index, "contactNumber",  e.target.value)}  /> </TableCell> 
-                  
-                  </TableRow> 
-                ))
-
-                 : ""
-            }
-
-                  <TableRow>  
-                    <TableCell><Input onChange={(e) => handleSingleRowInputs('name', e.target.value) } placeholder='name'/> </TableCell>
-                    <TableCell><Input onChange={(e) => handleSingleRowInputs('address', e.target.value)} placeholder='address'/> </TableCell>
-                    <TableCell><Input onChange={(e) => handleSingleRowInputs('coords', e.target.value)} placeholder='coords'/> </TableCell>
-                    
-                    <TableCell><Input   type="file" /></TableCell>  
-                  </TableRow>
-               
-
-                  {/* <TableRow className='w-full bg-red-500'>
-                      <TableHead colSpan={4} className='text-right'>
-
-                        <Button className='mr-2' onClick={() => handleAddRow(singleRow)}>Add</Button>
-                        <Button
-                          onClick={async () => {
-                            try {
-                              await addRowPlaceMutation(singleRow)
-                            } catch (error) {
-                              console.log(error)
-                            }
-                          }}>
-                            Add Mutation
-                        </Button>
-                      </TableHead>
-                    
-                  </TableRow> */}
-               
             
-            
-          </TableBody>
+          
+          <Table>
+            <TableHeader>
+              <TableRow className='text-xs'>
+                <TableHead>Name</TableHead>
+                <TableHead>User Id</TableHead>
+                <TableHead>Address</TableHead>
+                <TableHead>Type</TableHead>
+                <TableHead>Location</TableHead>
+                <TableHead>City Province</TableHead>
+                <TableHead>City ID</TableHead>
+                <TableHead className='w-[500px]'>Description</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead>Landmark</TableHead>
+                <TableHead>Must Try</TableHead>
+                <TableHead>Role</TableHead>
+                <TableHead>Img</TableHead>
+                <TableHead>Imgs</TableHead>
+                <TableHead>Coords</TableHead>
+                <TableHead>Coords Spatial</TableHead>
+                <TableHead>Contact Number</TableHead>
+                {/*
+                  name, address, type, location, cityProvince, cityId, description, email, landmark, mustTry, role, img, imgs, coords, coordsSpatial, contactNumber
+                */}
+              </TableRow>
+            </TableHeader> 
+            <TableBody>
+              {
+                tableData ?
+                  tableData.map((row:any, index:number) => (
+                    
+                    <TableRow>  
 
-        </Table>
-        <CardFooter className='w-full flex justify-end pt-4'>
+                      <TableCell><Input value={row.name} onChange={(e) => handleInputChange(index, "name",  e.target.value)} /> </TableCell>
+                      <TableCell><Input value={row.userId} onChange={(e) => handleInputChange(index, "userId",  e.target.value)} /> </TableCell>
+                      <TableCell><Input value={row.address} onChange={(e) => handleInputChange(index, "address",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input value={row.type} onChange={(e) => handleInputChange(index, "type",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input value={row.location} onChange={(e) => handleInputChange(index, "location",  e.target.value)} /> </TableCell>
+                      <TableCell><Input value={row.cityProvince} onChange={(e) => handleInputChange(index, "cityProvince",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input value={row.cityId} onChange={(e) => handleInputChange(index, "cityId",  e.target.value)}  /> </TableCell>
+                      <TableCell><Textarea value={row.description} onChange={(e) => handleInputChange(index, "description",  e.target.value)} /> </TableCell>
+                      <TableCell><Input value={row.email} onChange={(e) => handleInputChange(index, "email",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input value={row.landmark} onChange={(e) => handleInputChange(index, "landmark",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input value={row.mustTry} onChange={(e) => handleInputChange(index, "mustTry",  e.target.value)} /> </TableCell>
+                      <TableCell><Input value={row.role} onChange={(e) => handleInputChange(index, "role",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input value={row.img} onChange={(e) => handleInputChange(index, "img",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input value={row.imgs} onChange={(e) => handleInputChange(index, "imgs",  e.target.value)} /> </TableCell>
+                      <TableCell><Input value={row.coords} onChange={(e) => handleInputChange(index, "coords",  e.target.value)}  /> </TableCell>
+                      <TableCell>{JSON.stringify(row.coordsSpatial)} </TableCell>
+                      {/* <TableCell><Input value={row.coordsSpatial} onChange={(e) => handleInputChange(index, "coordsSpatial",  e.target.value)}  /> </TableCell> */}
+                      <TableCell><Input value={row.contactNumber} onChange={(e) => handleInputChange(index, "contactNumber",  e.target.value)}  /> </TableCell> 
+                    
+                    </TableRow> 
+                  ))
 
-          <Button onClick={handleBulkUpload} className='w-1/2'>Submit</Button>
-        </CardFooter>
-      </Card>
-      <Card>
-        <CardContent className='text-xs text-opacity-50'>
-          <pre>
-            { JSON.stringify(tableData, null, 2) }
-          </pre>
-        </CardContent>
-      </Card>
-      
-      
+                  : ""
+              }
+
+                    <TableRow>
+                      <TableCell colSpan={17} className="w-full bg-gray-100">
+                        
+                        <CardHeader>
+                          <Input type="file" onChange={(e:any) => { 
+                            const file = e.target.files[0];
+                            readExcel(file) 
+                          }} />
+
+                        </CardHeader>
+
+                      </TableCell>
+                    </TableRow>
+                    {/*
+                    
+                    <TableRow>  
+                      <TableCell><Input onChange={(e) => handleSingleRowInputs('name', e.target.value) } placeholder='name'/> </TableCell>
+                      <TableCell><Input onChange={(e) => handleSingleRowInputs('address', e.target.value)} placeholder='address'/> </TableCell>
+                      <TableCell><Input onChange={(e) => handleSingleRowInputs('coords', e.target.value)} placeholder='coords'/> </TableCell>
+                      
+                      <TableCell><Input   type="file" /></TableCell>  
+                    </TableRow>
+                    
+                    */}
+                
+
+                    {/* <TableRow className='w-full bg-red-500'>
+                        <TableHead colSpan={4} className='text-right'>
+
+                          <Button className='mr-2' onClick={() => handleAddRow(singleRow)}>Add</Button>
+                          <Button
+                            onClick={async () => {
+                              try {
+                                await addRowPlaceMutation(singleRow)
+                              } catch (error) {
+                                console.log(error)
+                              }
+                            }}>
+                              Add Mutation
+                          </Button>
+                        </TableHead>
+                      
+                    </TableRow> */}
+                
+              
+              
+            </TableBody>
+
+          </Table>
+          <CardFooter className='w-full flex justify-end pt-4'>
+
+            <Button onClick={handleBulkUpload} className='w-1/2'>Submit</Button>
+          </CardFooter>
+        </div>
+        <div  >
+          <CardContent className='text-xs text-opacity-50 text-left'>
+            <pre>
+              { JSON.stringify(tableData, null, 2) }
+            </pre>
+          </CardContent>
+        </div>
+      </div>
     </>
   )
 }
