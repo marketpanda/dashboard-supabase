@@ -2,7 +2,7 @@
 import { Route, Routes } from 'react-router-dom'
 import './App.css'
 import Navbar from './components/Navbar'
-import Profile from './Pages/Profile'
+// import Profile from './Pages/Profile'
 
 import HomePage from './Pages/HomePage'
 import Profiles from './Pages/Profiles'
@@ -14,11 +14,8 @@ import { Card } from './components/ui/card'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from './components/ui/resizable'
 import { 
   Inbox,
-  File,
-  Search,
   Users2,
   MapIcon,
-  Map,
   HomeIcon,
   
  } from 'lucide-react'
@@ -43,9 +40,9 @@ function App() {
             maxSize={20}
             minSize={5}
             collapsedSize={4} 
-            onCollapse={(collapsed) => {
+            onCollapse={() => {
               setIsCollapsed(true)
-              document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(collapsed)}`
+              document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`
             }}
             onExpand={() => {
               setIsCollapsed(false)

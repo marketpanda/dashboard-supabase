@@ -1,0 +1,9 @@
+version: "3.3"
+services:
+  dashboard:
+    build: .
+    container_name: dashboard_c
+    ports:
+      - '3000:3000'
+    stdin_open: true
+    tty: true

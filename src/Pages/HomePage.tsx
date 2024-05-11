@@ -1,7 +1,7 @@
 import * as xlsx from 'xlsx'
 import axios from 'axios'
 import { Button } from '../components/ui/button'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card' 
+import { CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card' 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
 import { useEffect, useState } from 'react'
 import { Input } from '../components/ui/input'
@@ -25,7 +25,7 @@ const HomePage = () => {
 
   const [tableData, setTableData] = useState<any>(null)
 
-  const [singleRow, setSingleRow] = useState<any>({})
+  // const [singleRow, setSingleRow] = useState<any>({})
 
 
   // https://www.geoapify.com/google-plus-code-as-a-location-code
@@ -162,15 +162,15 @@ const HomePage = () => {
   }
 
  
-  const handleSingleRowInputs = (getSingleRow: string, inputText:string) => {
-    console.log(getSingleRow)
-    console.log(inputText)
+  // const handleSingleRowInputs = (getSingleRow: string, inputText:string) => {
+  //   console.log(getSingleRow)
+  //   console.log(inputText)
     
-    const newSingleRow = {...singleRow}
-    newSingleRow[getSingleRow] = inputText
-    setSingleRow(newSingleRow)
-    console.log(singleRow)
-  }
+  //   const newSingleRow = {...singleRow}
+  //   newSingleRow[getSingleRow] = inputText
+  //   setSingleRow(newSingleRow)
+  //   console.log(singleRow)
+  // }
 
   // const handleAddRow = (theRow: typeRow) => {
   //   console.log(singleRow, theRow)
