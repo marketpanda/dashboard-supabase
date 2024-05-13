@@ -17,10 +17,12 @@ import {
   Users2,
   MapIcon,
   HomeIcon,
+  Images
   
  } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from './lib/utils.ts'
+import Pending from './Pages/Pending.tsx'
 
 function App() {
 
@@ -60,6 +62,13 @@ function App() {
                 variant: "ghost"
               },
               {
+                location: "/pending",
+                title: "bulkPendingImages",
+                label: "Image Upload Pending",
+                icon: Images,
+                variant: "ghost"
+              },
+              {
                 location: "/places",
                 title: "places",
                 label: "Places",
@@ -89,6 +98,7 @@ function App() {
             <Routes>
              
               <Route path="/" element={<HomePage />} />
+              <Route path="/pending" element={<Pending />} />
               <Route path="/places" element={<Places />} />
               <Route path="/rentals" element={<Rentals />} />
               <Route path="/profiles" element={<Profiles />} />
