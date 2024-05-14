@@ -7,6 +7,8 @@ const Pending = () => {
 
   const [dataPending, setDataPending] = useState<any>(null)
  
+  const [file, setFile] = useState<File | undefined>()
+  const [preview, setPreview] = useState<any>(null)
 
   useEffect(() => { 
 
@@ -26,6 +28,39 @@ const Pending = () => {
     fetchData()
 
   }, [])
+
+
+  const handleSubmit = (e: React.SyntheticEvent) => { 
+    e.preventDefault()
+    if (typeof file === 'undefined') return
+
+    const formData = new FormData()
+
+    formData.append('file', file)
+    // formData.append('upload_preset', 'test-react-uploads-unsigned')
+    // formData.append('api_key', import.meta.env.VITE_APP_CLOUDINARY_KEY)
+
+    // const results = await axios.get('http://fetch...') 
+    console.log(file)
+  }
+
+  const handleChangeImage = (e: React.FormEvent<HTMLInputElement>) => {
+    e.preventDefault() 
+    const target = e.target as HTMLInputElement & {
+      files: FileList
+    }
+    setFile(target.files[0])
+
+    const file = new FileReader()
+
+    file.onload = function() {
+      console.log('file', file.result)
+      setPreview(file.result)
+    }
+
+    file.readAsDataURL(target.files[0])
+
+  }
 
   
   return (
@@ -89,10 +124,7 @@ const Pending = () => {
                       </TableCell>
                       <TableCell>
                         <div>coordsSpatial</div> 
-                      </TableCell>
- 
-                      
-                    
+                      </TableCell> 
                     </TableRow> 
                   ))
 
@@ -102,6 +134,46 @@ const Pending = () => {
  
               } 
               
+              <TableRow>
+                <TableCell
+                  colSpan={9}
+                  className='bg-gray-100'>
+
+                  <div className='flex justify-between'>
+                    <div className='text-left flex flex-col'>
+                      <h1 className='text-xl'>Quirino Grandstand</h1>
+                      <span>123 Smart Street</span>
+                      <span>Manila</span>
+                    </div>
+                    <div className='flex gap-2'>
+                      <div className='w-[200px]  rounded overflow-hidden border-2 border-dashed border-gray-500 p-1'>
+
+                        <img className='h-full object-cover' src="https://azure.wgp-cdn.co.uk/app-practicalfishkeeping/news/5418677ab76b9.jpg?&width=1200&height=630&mode=crop&format=webp&webp.quality=40&scale=both" alt="Quirino Grandstand" />  
+                      </div>
+                      <div className='w-[200px] rounded overflow-hidden border-2 border-dashed border-gray-500 p-1'>
+
+                        <img className='h-full object-cover'  src="https://azgardens.com/wp-content/uploads/2017/06/Black-Moor-Goldfish.jpg" alt="Quirino Grandstand" />  
+                      </div>
+                      <div>
+                        <img src={preview} />
+                      </div>
+                      <div>
+                        <form onSubmit={handleSubmit}> 
+                          <input
+                            type="file"
+                            multiple
+                            accept="image/png, image/jpg"
+                            name="imageUpload"
+                            onChange={handleChangeImage} />
+                          <input type="submit" value="Upload" className='bg-blue-500 text-white rounded px-3 py-1 flex w-full justify-center mt-2' /> 
+                        </form>
+                      </div>
+                    </div>
+                  </div>
+                </TableCell>
+              </TableRow>
+
+                      
             </TableBody>
 
           </Table>
