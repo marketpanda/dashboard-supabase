@@ -5,7 +5,7 @@ import { ImageUp, X } from 'lucide-react'
 
 const DropZoneandPreview = ({ onDragImageOnRow, identifier }: {onDragImageOnRow:any, identifier: string | number }) => {
     type PreviewFile = File & {
-        preview: string
+        preview: string 
     }
 
     const [preview, setPreview] = useState<PreviewFile[]>([])
