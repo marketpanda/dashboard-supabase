@@ -3,8 +3,7 @@ import {  useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
 
 
-//drag and drop
- 
+//drag and drop 
 import DropZoneandPreview from '../components/DropZoneandPreview'
 import { MapPin } from 'lucide-react'
 
@@ -18,18 +17,17 @@ const Pending = () => {
     imgs: string[]
   }
 
-  const [dataPending, setDataPending] = useState<any >(null)  
+  const [dataPending, setDataPending] = useState<any>(null)  
   const [dataForImageUpload, setDataForImageUpload] = useState<imageUploadRow[] | null>(null) 
- 
-
   
   useEffect(() => {   
     const fetchData = async() => {
       try {        
+
+        //get listing with no images
         const response  = await axios.get(`${import.meta.env.VITE_APP_BACKEND_ROOT}/admin/pendingImageUpload`)
         const data = response.data.data
-        
-        console.log(data)
+       
         setDataPending(data) 
         
       } catch (error) {
@@ -60,95 +58,77 @@ const Pending = () => {
 
   }, [dataPending])
 
-  const handleRowUpload = async(preview:any) => {
-    
-    console.log(preview)
-    console.log(typeof preview)
-    
+  const uploadFile = async (file:any, identifier: any) => {
     const body = new FormData()
-    body.append("upload_preset", import.meta.env.VITE_APP_CLOUDINARY_PRESET)
-    body.append("cloud_name", import.meta.env.VITE_APP_CLOUDINARY_CLOUD_NAME)
-
-    console.log(body)
-
-    preview.forEach((file:any) => {
-      body.append('file', file.file)
-    })
-
-
-    // const handleAddPlaceForm = async (event) => { 
-   
+    body.append("upload_preset", `${import.meta.env.VITE_APP_CLOUDINARY_PRESET_PLACES}`)
+    body.append("cloud_name", `${import.meta.env.VITE_APP_CLOUDINARY_CLOUD_NAME}`)
+    body.append('file', file)
     
-    //     const body = new FormData()
+    try {
+
+      const submitPhotosInARow = await fetch('https://api.cloudinary.com/v1_1/marketpanda/image/upload', {
+        method: 'POST',
+        body: body 
+      })
+
+      const data = await submitPhotosInARow.json()
+
+
+      console.log(data) 
       
-    //     console.log(event.imgs[0])
-    
-    //     body.append("upload_preset", process.env.VUE_APP_CLOUDINARY_PRESET)
-    //     body.append("cloud_name", process.env.VUE_APP_CLOUDINARY_CLOUD_NAME)
-    
-        
-    //     event.imgs.forEach((file) => {
-    //         body.append('file', file.file)
-    //     }) 
-    
-    //     const varEndPoint = getVariableEndPoint(data.value.type)
-      
-        
-    //     try {
-    
-    //         const res2 = await fetch('https://api.cloudinary.com/v1_1/marketpanda/image/upload', {
-    //             method: 'POST',
-    //             body: body
-    //         })
-    
-    //         const data2 = await res2.json()  
-    //         const cloudinaryResult = data2.secure_url
-    //         imageCirlce.value = cloudinaryResult
-        
-    //         data.value.img = cloudinaryResult
-    //         //we stringify arrayed cloudinaryResult for it to be accepted in db
-    //         const imgsArray = []
-    //         imgsArray.push(cloudinaryResult)
-    //         data.value.imgs = JSON.stringify(imgsArray)
-    
-    //         //coords is an array, so we stringify it to be accepted in db
-    //         data.value.coords = JSON.stringify(data.value.coords)
-    
-          
-    //         const res = await axios.post(varEndPoint, data.value) 
-    //         const getData = res.data
-          
-    
-    //         if (res.status === 200) {
-                
-    //             submitted.value = true
-    //         } else {
-    //             console.log(res.statusText)
-    //         } 
-            
-    
-    //         const newData =  data.value.imgs  
-            
-    
-    //     } catch (error) {
-    //         console.log(error)
-    //     }
-    // }
+      //insert the results to object array of pending entries (no images)
 
+      updateRowWithNewImage(data, identifier)
+       
+      return data
 
-
-
-
-
-
-
-
-
-
-
-
-
+    } catch (error) { 
+      console.log(error )
+    }
   }
+  
+
+  const updateRowWithNewImage = (result: any, id:any) => {
+    const getRow = dataForImageUpload?.find(item => item.id === id)
+    if (getRow) {
+      const hasExisting = getRow.imgs
+      if (!hasExisting || hasExisting.length == 0) {
+        console.log('Could not find row')
+        getRow.imgs = result.secure_url //cloudinary object
+      } else {
+        const temp = getRow.imgs
+        temp.push(result.secure_url)
+      }
+
+      setDataForImageUpload((prev:any) => prev.map((item:any) => (
+        item.id === id ? getRow : item
+      )))
+    } else {
+      console.log('Could not find row')
+    }
+  }
+
+ 
+
+  const handleRowUpload = async(preview:any, identifier:number) => {
+     
+     
+    const uploadPromises = preview.map((file:any, _:number) => uploadFile(file, identifier))
+    try {
+
+      const results = await Promise.all(uploadPromises)
+      console.log('All images uploaded', results)
+      return results
+
+    } catch (error) {
+
+      console.log(error)
+
+    }
+
+  } 
+
+   
  
  
   return (
@@ -159,32 +139,25 @@ const Pending = () => {
       <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                
+                <TableHead>Name</TableHead> 
                 <TableHead>Add Pics</TableHead>
-                <TableHead>Address</TableHead>
-                
-                <TableHead>City Province</TableHead>
-                
-                <TableHead>Description</TableHead>
-                
+                <TableHead>Address</TableHead> 
+                <TableHead>City Province</TableHead> 
+                <TableHead>Description</TableHead> 
                 <TableHead>Img</TableHead>
                 <TableHead>Imgs</TableHead>
                 <TableHead>Coords</TableHead>
-                <TableHead>Coords Spatial</TableHead>
-               
+                <TableHead>Coords Spatial</TableHead> 
               </TableRow>
             </TableHeader> 
             <TableBody>
-
-              
+ 
               {  
                 dataPending ? 
-                  dataPending?.map((row:any, i:number) => (
-                    
+                  dataPending?.map((row:any, i:number) => ( 
                     <TableRow key={i}>  
 
-                      <TableCell>
+                      <TableCell key={i}>
                       <div>{ row.name }</div> 
                       </TableCell>
                       
@@ -221,8 +194,6 @@ const Pending = () => {
                 ""
  
               } 
-              
-               
                
 
               {
@@ -238,7 +209,7 @@ const Pending = () => {
                         <div className='text-left flex flex-col'>
                           <h1 className='text-xl font-semibold cursor-default text-slate-800'>{ forImageUploadRow.name }</h1>
                           <div className='flex gap-2 items-center text-xs mt-2 text-slate-800'>
-                            <MapPin size={21  } />
+                            <MapPin size={21} />
                             <div className='flex flex-col'>
                               <span>{ forImageUploadRow.address }</span> 
                               <span>{ forImageUploadRow.cityProvince }</span>  
@@ -246,18 +217,14 @@ const Pending = () => {
                           </div>
                         </div>
                         
-                        <DropZoneandPreview onDragImageOnRow={ handleRowUpload } />
+                        <DropZoneandPreview
+                          onDragImageOnRow={ handleRowUpload }
+                          identifier={ forImageUploadRow.id} />
                       </div>
                     </TableCell>
                   </TableRow>
                 )) :
-                (
-                  <TableRow>
-                    <TableCell colSpan={9}>
-                      <div>Getting Rows</div>
-                    </TableCell>
-                  </TableRow>
-                )
+                ""
               }
 
 

@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone'
 import { ImageUp, X } from 'lucide-react'
 
 
-const DropZoneandPreview = ({ onDragImageOnRow }: {onDragImageOnRow:any}) => {
+const DropZoneandPreview = ({ onDragImageOnRow, identifier }: {onDragImageOnRow:any, identifier: string | number}) => {
     type PreviewFile = File & {
         preview: string
     }
@@ -39,7 +39,7 @@ const DropZoneandPreview = ({ onDragImageOnRow }: {onDragImageOnRow:any}) => {
             'image/png': [],
             'image/jpg': [] 
         },
-        maxFiles: 20
+        maxFiles: 8
         })
 
     // console.log(get  InputProps)
@@ -52,8 +52,8 @@ const DropZoneandPreview = ({ onDragImageOnRow }: {onDragImageOnRow:any}) => {
                 {
                     preview.length ? 
                     preview.map((img, i:number) => (    
-                        <div className='relative w-[200px] h-[100px] overflow-hidden bg-white p-1' onClick={(e) => {e.stopPropagation()}}>
-                            <img key={i} className='h-full object-cover' src={img.preview} alt="pic" />  
+                        <div key={i} className='relative w-[200px] h-[100px] overflow-hidden bg-white p-1' onClick={(e) => {e.stopPropagation()}}>
+                            <img  className='h-full object-cover' src={img.preview} alt="pic" />  
                             <div className='absolute top-1 right-3 text-gray-500 cursor-pointer w-2 h-2 rounded-full bg-white'
                             onClick={(e) => {
                                 //stop popping up the upload window
@@ -80,9 +80,7 @@ const DropZoneandPreview = ({ onDragImageOnRow }: {onDragImageOnRow:any}) => {
                 ""  
             }
                  
-            </div> 
-
-
+            </div>  
              
             {
                 preview.length ? (
@@ -92,19 +90,17 @@ const DropZoneandPreview = ({ onDragImageOnRow }: {onDragImageOnRow:any}) => {
                         <input type="submit"
                             onClick={(e) => {
                                 e.preventDefault()
-                                onDragImageOnRow(preview)
+                                onDragImageOnRow(preview, identifier)
                             }}
                         value="Upload"
-                        className='bg-lime-800 text-white font-semibold text-xs rounded px-3 py-1 flex w-[100px] justify-center' /> 
+                        className='bg-lime-800 text-white font-semibold text-xs rounded cursor-pointer px-3 py-1 flex w-[100px] justify-center' /> 
                         <input type="button" onClick={clearImages} value="Clear"
-                        className='bg-lime-800 text-white font-semibold text-xs rounded px-3 py-1 flex w-[100px] justify-center' /> 
-                         
+                        className='bg-lime-800 text-white font-semibold text-xs rounded cursor-pointer px-3 py-1 flex w-[100px] justify-center' /> 
                     </form>
                 </div>
 
                 ) : ""
-            } 
-           
+            }  
 
         </div>
     )
