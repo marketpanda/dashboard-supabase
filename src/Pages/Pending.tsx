@@ -1,68 +1,156 @@
 import axios from 'axios'
-import { useEffect, useState } from 'react'
+import {  useEffect, useState } from 'react'
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
+
+
+//drag and drop
  
+import DropZoneandPreview from '../components/DropZoneandPreview'
+import { MapPin } from 'lucide-react'
 
 const Pending = () => { 
+  type imageUploadRow = {
+    id: string,
+    name: string,
+    userId: number,
+    address: string,
+    cityProvince: string,
+    imgs: string[]
+  }
 
-  const [dataPending, setDataPending] = useState<any>(null)
+  const [dataPending, setDataPending] = useState<any >(null)  
+  const [dataForImageUpload, setDataForImageUpload] = useState<imageUploadRow[] | null>(null) 
  
-  const [file, setFile] = useState<File | undefined>()
-  const [preview, setPreview] = useState<any>(null)
 
-  useEffect(() => { 
-
+  
+  useEffect(() => {   
     const fetchData = async() => {
       try {        
         const response  = await axios.get(`${import.meta.env.VITE_APP_BACKEND_ROOT}/admin/pendingImageUpload`)
         const data = response.data.data
         
         console.log(data)
-        setDataPending(data)
-  
+        setDataPending(data) 
+        
       } catch (error) {
         console.log(error)
       }
 
-    }
-    fetchData()
-
+    } 
+    fetchData()  
   }, [])
 
+  useEffect(() => {
+    const getRowsForImageUpload = () => {
+      if (!dataPending) return
 
-  const handleSubmit = (e: React.SyntheticEvent) => { 
-    e.preventDefault()
-    if (typeof file === 'undefined') return
-
-    const formData = new FormData()
-
-    formData.append('file', file)
-    // formData.append('upload_preset', 'test-react-uploads-unsigned')
-    // formData.append('api_key', import.meta.env.VITE_APP_CLOUDINARY_KEY)
-
-    // const results = await axios.get('http://fetch...') 
-    console.log(file)
-  }
-
-  const handleChangeImage = (e: React.FormEvent<HTMLInputElement>) => {
-    e.preventDefault() 
-    const target = e.target as HTMLInputElement & {
-      files: FileList
-    }
-    setFile(target.files[0])
-
-    const file = new FileReader()
-
-    file.onload = function() {
-      console.log('file', file.result)
-      setPreview(file.result)
+      const dataRowsFiltered = dataPending.map((dataRow:imageUploadRow) => ({ 
+        id: dataRow.id,
+        name: dataRow.name,
+        userId: dataRow.userId,
+        address: dataRow.address,
+        cityProvince: dataRow.cityProvince,
+        imgs: []
+      }))
+ 
+      setDataForImageUpload(dataRowsFiltered)
     }
 
-    file.readAsDataURL(target.files[0])
+    getRowsForImageUpload()
+
+  }, [dataPending])
+
+  const handleRowUpload = async(preview:any) => {
+    
+    console.log(preview)
+    console.log(typeof preview)
+    
+    const body = new FormData()
+    body.append("upload_preset", import.meta.env.VITE_APP_CLOUDINARY_PRESET)
+    body.append("cloud_name", import.meta.env.VITE_APP_CLOUDINARY_CLOUD_NAME)
+
+    console.log(body)
+
+    preview.forEach((file:any) => {
+      body.append('file', file.file)
+    })
+
+
+    // const handleAddPlaceForm = async (event) => { 
+   
+    
+    //     const body = new FormData()
+      
+    //     console.log(event.imgs[0])
+    
+    //     body.append("upload_preset", process.env.VUE_APP_CLOUDINARY_PRESET)
+    //     body.append("cloud_name", process.env.VUE_APP_CLOUDINARY_CLOUD_NAME)
+    
+        
+    //     event.imgs.forEach((file) => {
+    //         body.append('file', file.file)
+    //     }) 
+    
+    //     const varEndPoint = getVariableEndPoint(data.value.type)
+      
+        
+    //     try {
+    
+    //         const res2 = await fetch('https://api.cloudinary.com/v1_1/marketpanda/image/upload', {
+    //             method: 'POST',
+    //             body: body
+    //         })
+    
+    //         const data2 = await res2.json()  
+    //         const cloudinaryResult = data2.secure_url
+    //         imageCirlce.value = cloudinaryResult
+        
+    //         data.value.img = cloudinaryResult
+    //         //we stringify arrayed cloudinaryResult for it to be accepted in db
+    //         const imgsArray = []
+    //         imgsArray.push(cloudinaryResult)
+    //         data.value.imgs = JSON.stringify(imgsArray)
+    
+    //         //coords is an array, so we stringify it to be accepted in db
+    //         data.value.coords = JSON.stringify(data.value.coords)
+    
+          
+    //         const res = await axios.post(varEndPoint, data.value) 
+    //         const getData = res.data
+          
+    
+    //         if (res.status === 200) {
+                
+    //             submitted.value = true
+    //         } else {
+    //             console.log(res.statusText)
+    //         } 
+            
+    
+    //         const newData =  data.value.imgs  
+            
+    
+    //     } catch (error) {
+    //         console.log(error)
+    //     }
+    // }
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   }
-
-  
+ 
+ 
   return (
     <>
       
@@ -92,9 +180,9 @@ const Pending = () => {
               
               {  
                 dataPending ? 
-                  dataPending?.map((row:any, _:number) => (
+                  dataPending?.map((row:any, i:number) => (
                     
-                    <TableRow>  
+                    <TableRow key={i}>  
 
                       <TableCell>
                       <div>{ row.name }</div> 
@@ -134,50 +222,56 @@ const Pending = () => {
  
               } 
               
-              <TableRow>
-                <TableCell
-                  colSpan={9}
-                  className='bg-gray-100'>
+               
+               
 
-                  <div className='flex justify-between'>
-                    <div className='text-left flex flex-col'>
-                      <h1 className='text-xl'>Quirino Grandstand</h1>
-                      <span>123 Smart Street</span>
-                      <span>Manila</span>
-                    </div>
-                    <div className='flex gap-2'>
-                      <div className='w-[200px]  rounded overflow-hidden border-2 border-dashed border-gray-500 p-1'>
+              {
+                dataForImageUpload ?
+                dataForImageUpload?.map((forImageUploadRow:imageUploadRow, index:number) => (
+                  <TableRow>
 
-                        <img className='h-full object-cover' src="https://azure.wgp-cdn.co.uk/app-practicalfishkeeping/news/5418677ab76b9.jpg?&width=1200&height=630&mode=crop&format=webp&webp.quality=40&scale=both" alt="Quirino Grandstand" />  
-                      </div>
-                      <div className='w-[200px] rounded overflow-hidden border-2 border-dashed border-gray-500 p-1'>
+                    <TableCell
+                    colSpan={9}
+                    className={index % 2 === 0 ? 'bg-gray-100': 'bg-gray-50'}>
 
-                        <img className='h-full object-cover'  src="https://azgardens.com/wp-content/uploads/2017/06/Black-Moor-Goldfish.jpg" alt="Quirino Grandstand" />  
+                      <div className='flex justify-between'>
+                        <div className='text-left flex flex-col'>
+                          <h1 className='text-xl font-semibold cursor-default text-slate-800'>{ forImageUploadRow.name }</h1>
+                          <div className='flex gap-2 items-center text-xs mt-2 text-slate-800'>
+                            <MapPin size={21  } />
+                            <div className='flex flex-col'>
+                              <span>{ forImageUploadRow.address }</span> 
+                              <span>{ forImageUploadRow.cityProvince }</span>  
+                            </div>
+                          </div>
+                        </div>
+                        
+                        <DropZoneandPreview onDragImageOnRow={ handleRowUpload } />
                       </div>
-                      <div>
-                        <img src={preview} />
-                      </div>
-                      <div>
-                        <form onSubmit={handleSubmit}> 
-                          <input
-                            type="file"
-                            multiple
-                            accept="image/png, image/jpg"
-                            name="imageUpload"
-                            onChange={handleChangeImage} />
-                          <input type="submit" value="Upload" className='bg-blue-500 text-white rounded px-3 py-1 flex w-full justify-center mt-2' /> 
-                        </form>
-                      </div>
-                    </div>
-                  </div>
-                </TableCell>
-              </TableRow>
+                    </TableCell>
+                  </TableRow>
+                )) :
+                (
+                  <TableRow>
+                    <TableCell colSpan={9}>
+                      <div>Getting Rows</div>
+                    </TableCell>
+                  </TableRow>
+                )
+              }
+
+
 
                       
             </TableBody>
 
           </Table>
 
+      </div>
+      <div>
+        {
+          dataForImageUpload ? <pre className='text-left text-xs'>{JSON.stringify(dataForImageUpload, null, 2)}</pre> : <div>Loading...</div>
+        }
       </div>
       <div>
         {
