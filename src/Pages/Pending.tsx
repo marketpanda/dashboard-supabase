@@ -10,7 +10,7 @@ import { MapPin } from 'lucide-react'
 const Pending = () => { 
   type imageUploadRow = {
     id: string,
-    name: string,
+    name: string, 
     userId: number,
     address: string,
     cityProvince: string,
@@ -109,9 +109,7 @@ const Pending = () => {
   }
 
  
-
-  const handleRowUpload = async(preview:any, identifier:number) => { 
-     
+  const handleRowUpload = async(preview:any, identifier:number) => {     
      
     const uploadPromises = preview.map((file:any, _:number) => uploadFile(file, identifier))
     try {
@@ -127,15 +125,9 @@ const Pending = () => {
     }
 
   } 
-
-   
- 
- 
   return (
-    <>
-      
+    <>      
       <div>
-
       <Table>
             <TableHeader>
               <TableRow>
