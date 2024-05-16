@@ -110,7 +110,7 @@ const Pending = () => {
 
  
 
-  const handleRowUpload = async(preview:any, identifier:number) => {
+  const handleRowUpload = async(preview:any, identifier:number) => { 
      
      
     const uploadPromises = preview.map((file:any, _:number) => uploadFile(file, identifier))
