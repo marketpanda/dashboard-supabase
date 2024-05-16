@@ -56,13 +56,15 @@ const Pending = () => {
 
     getRowsForImageUpload()
 
-  }, [dataPending])
+  }, [dataPending]) 
 
   const uploadFile = async (file:any, identifier: any) => {
     const body = new FormData()
     body.append("upload_preset", `${import.meta.env.VITE_APP_CLOUDINARY_PRESET_PLACES}`)
     body.append("cloud_name", `${import.meta.env.VITE_APP_CLOUDINARY_CLOUD_NAME}`)
     body.append('file', file)
+
+    //comment
     
     try {
 
