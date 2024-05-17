@@ -6,6 +6,8 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 //drag and drop 
 import DropZoneandPreview from '../components/DropZoneandPreview'
 import { MapPin } from 'lucide-react'
+import { Button } from '../components/ui/button'
+import { useImageStore } from '../store'
 
 const Pending = () => { 
   type imageUploadRow = {
@@ -48,7 +50,8 @@ const Pending = () => {
         userId: dataRow.userId,
         address: dataRow.address,
         cityProvince: dataRow.cityProvince,
-        imgs: []
+        imgs: [],
+        tempImgs: [] // key value to be used for batch upload
       }))
  
       setDataForImageUpload(dataRowsFiltered)
@@ -57,6 +60,9 @@ const Pending = () => {
     getRowsForImageUpload()
 
   }, [dataPending]) 
+
+  const updateStateAfterRowUpload = useImageStore(state => state.updateRowSuccessfulImageUpload)
+
 
   const uploadFile = async (file:any, identifier: any) => {
     const body = new FormData()
@@ -75,11 +81,9 @@ const Pending = () => {
 
       const data = await submitPhotosInARow.json()
 
-
       console.log(data) 
       
       //insert the results to object array of pending entries (no images)
-
       updateRowWithNewImage(data, identifier)
        
       return data
@@ -95,8 +99,8 @@ const Pending = () => {
     if (getRow) {
       const hasExisting = getRow.imgs
       if (!hasExisting || hasExisting.length == 0) {
-        console.log('Could not find row')
-        getRow.imgs = result.secure_url //cloudinary object
+        // console.log('Could not find row')
+        getRow.imgs = [result.secure_url] //cloudinary object
       } else {
         const temp = getRow.imgs
         temp.push(result.secure_url)
@@ -107,16 +111,19 @@ const Pending = () => {
       )))
     } else {
       console.log('Could not find row')
-    }
+    } 
   }
 
  
-  const handleRowUpload = async(preview:any, identifier:number) => {     
+  const handleRowUpload = async(preview:any, identifier:number | string) => {     
      
     const uploadPromises = preview.map((file:any, _:number) => uploadFile(file, identifier))
     try {
 
       const results = await Promise.all(uploadPromises)
+
+      const secureUrls = results.map(item => item.secure_url)
+      updateStateAfterRowUpload(identifier, secureUrls)
       console.log('All images uploaded', results)
       return results
 
@@ -127,6 +134,25 @@ const Pending = () => {
     }
 
   } 
+
+  const uploadAndSubmitAllImages = async() => { 
+    const getAllPendingImages = useImageStore.getState().imgs
+    console.log('uploading images ', getAllPendingImages)
+
+    const uploadPromises = getAllPendingImages.map(({id, images}) => {
+      handleRowUpload(images, id)
+    })
+
+    try {
+      const results = await Promise.all(uploadPromises)
+      console.log('All images uploaded ', results)
+
+    } catch (error) {
+      console.log('Error uploading images ', error)
+    }
+
+  }
+
   return (
     <>      
       <div>
@@ -181,12 +207,9 @@ const Pending = () => {
                         <div>coordsSpatial</div> 
                       </TableCell> 
                     </TableRow> 
-                  ))
-
-                :
-
-                ""
- 
+                  )) 
+                : 
+                "" 
               } 
                
 
@@ -199,7 +222,7 @@ const Pending = () => {
                     colSpan={9}
                     className={index % 2 === 0 ? 'bg-gray-100': 'bg-gray-50'}>
 
-                      <div className='flex justify-between'>
+                      <div className='flex flex-col gap-2 sm:flex-row sm:justify-between'>
                         <div className='text-left flex flex-col'>
                           <h1 className='text-xl font-semibold cursor-default text-slate-800'>{ forImageUploadRow.name }</h1>
                           <div className='flex gap-2 items-center text-xs mt-2 text-slate-800'>
@@ -213,7 +236,8 @@ const Pending = () => {
                         
                         <DropZoneandPreview
                           onDragImageOnRow={ handleRowUpload }
-                          identifier={ forImageUploadRow.id} />
+                          identifier={ forImageUploadRow.id }
+                        />
                       </div>
                     </TableCell>
                   </TableRow>
@@ -221,7 +245,15 @@ const Pending = () => {
                 ""
               }
 
-
+              <TableRow>
+                <TableCell
+                colSpan={9}
+                className='bg-lime-500'>
+                  <div>
+                    <Button onClick={uploadAndSubmitAllImages}>Submit All</Button>
+                  </div>
+                </TableCell>
+              </TableRow>
 
                       
             </TableBody>

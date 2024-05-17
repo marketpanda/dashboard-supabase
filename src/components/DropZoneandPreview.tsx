@@ -1,30 +1,49 @@
 import { useCallback, useState } from 'react'
 import { useDropzone } from 'react-dropzone'
 import { ImageUp, X } from 'lucide-react'
+// import { imageUploadRow } from './types'
 
+import { useImageStore } from '../store'
 
-const DropZoneandPreview = ({ onDragImageOnRow, identifier }: {onDragImageOnRow:any, identifier: string | number }) => {
+const DropZoneandPreview = ({ onDragImageOnRow, identifier } : {
+    onDragImageOnRow:any,
+    identifier: string 
+}) => {
     type PreviewFile = File & {
         preview: string 
     }
 
+
+
     const [preview, setPreview] = useState<PreviewFile[]>([])
+     
+    
+
+    const insertNewImageRowUpload = useImageStore(state => state.insertImagesFromARow)
+    const clearImagesInARow = useImageStore(state => state.clearImagesInARow)
     
     const onDrop = useCallback((acceptedFiles:any) => {
       
-        setPreview(acceptedFiles.map( (file:any) => 
+        setPreview(acceptedFiles.map((file:any) => 
             Object.assign(file, {
                 preview: URL.createObjectURL(file)
             })))
 
-    }, [])
+        // echoIt(acceptedFiles, identifier)
+        // console.log(acceptedFiles)
+        
+        insertNewImageRowUpload(identifier, acceptedFiles)
+            
+        
+    }, [insertNewImageRowUpload, identifier])
 
     const handleRemovePic = (picToRemove: PreviewFile) => { 
         setPreview(prev => prev.filter(pic => pic !== picToRemove))
     }
 
-    const clearImages = () => {
+    const clearImages = () => { 
         setPreview([])
+        clearImagesInARow(identifier)
     }
 
      
@@ -39,7 +58,7 @@ const DropZoneandPreview = ({ onDragImageOnRow, identifier }: {onDragImageOnRow:
             'image/png': [],
             'image/jpg': [] 
         },
-        maxFiles: 8
+        maxFiles: 8 
         })
 
     // console.log(get  InputProps)
