@@ -1,4 +1,5 @@
  
+import axios from 'axios'
 import { create } from 'zustand'
 
 type Image = { id: string, images: any, uploadedImages?: string }    
@@ -6,7 +7,7 @@ type Image = { id: string, images: any, uploadedImages?: string }
 type imageStore = {
     imgs: Image[],
     insertImagesFromARow: (id: string, pendingImages: string[]) => void,
-    updateRowSuccessfulImageUpload: (id: string | number, secureUrlCloudinary: string[]) => void,
+    updateRowSuccessfulImageUpload: (id: string | number, secureUrlCloudinary: string[]) => Promise<void>,
     clearImagesInARow: (id: string) => void,
     echoSample: (imageArray: any, id: string) => void,
    
@@ -47,24 +48,39 @@ export const useImageStore = create<imageStore>((set) => ({
             
     },
 
-    updateRowSuccessfulImageUpload: (id, secureUrlsCloudinary) => {
+    updateRowSuccessfulImageUpload: async(id, secureUrlsCloudinary) => {
+
+        try {
+
+            const uploadRowData = {
+                id: id,
+                secureUrlsCloudinary: secureUrlsCloudinary
+            }
+
+            const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_ROOT}/admin/singleRowLinksUpdate`, uploadRowData)
+            const data = response.data
+            
+            set((state:any) => {
+                const rowToUpdate = state.imgs.find((item:Image) => item.id === id)
+                const updatedImgs = state.imgs.map((item:Image) => (
+                    item.id === id ? {
+                        ...rowToUpdate, updatedImgs: secureUrlsCloudinary, data: data
+                    }: item
+                ))
+    
+                return { ...state, imgs: updatedImgs }
+            })
+    
+            //comment out below anytime, used for debugging
+            set((state) => {
+                console.log(state.imgs)
+                return state
+            })
+
+        } catch (error) {
+            console.log(error)
+        }
         
-        set((state:any) => {
-            const rowToUpdate = state.imgs.find((item:Image) => item.id === id)
-            const updatedImgs = state.imgs.map((item:Image) => (
-                item.id === id ? {
-                    ...rowToUpdate, updatedImgs: secureUrlsCloudinary
-                }: item
-            ))
-
-            return { ...state, imgs: updatedImgs }
-        })
-
-        //comment out below anytime, used for debugging
-        set((state) => {
-            console.log(state.imgs)
-            return state
-        })
     },
 
     echoSample: (str: any, id: string | number) => {

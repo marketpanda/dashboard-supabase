@@ -125,6 +125,8 @@ const Pending = () => {
       const secureUrls = results.map(item => item.secure_url)
       updateStateAfterRowUpload(identifier, secureUrls)
       console.log('All images uploaded', results)
+      
+
       return results
 
     } catch (error) {
@@ -135,6 +137,7 @@ const Pending = () => {
 
   } 
 
+  //iterates to all rows to upload
   const uploadAndSubmitAllImages = async() => { 
     const getAllPendingImages = useImageStore.getState().imgs
     console.log('uploading images ', getAllPendingImages)
@@ -170,8 +173,7 @@ const Pending = () => {
                 <TableHead>Coords Spatial</TableHead> 
               </TableRow>
             </TableHeader> 
-            <TableBody>
- 
+            <TableBody> 
               {  
                 dataPending ? 
                   dataPending?.map((row:any, i:number) => ( 
@@ -210,8 +212,7 @@ const Pending = () => {
                   )) 
                 : 
                 "" 
-              } 
-               
+              }  
 
               {
                 dataForImageUpload ?
@@ -253,11 +254,8 @@ const Pending = () => {
                     <Button onClick={uploadAndSubmitAllImages}>Submit All</Button>
                   </div>
                 </TableCell>
-              </TableRow>
-
-                      
-            </TableBody>
-
+              </TableRow> 
+            </TableBody> 
           </Table>
 
       </div>
