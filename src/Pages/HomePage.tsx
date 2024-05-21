@@ -189,11 +189,11 @@ const HomePage = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Name</TableHead>
-                <TableHead>User Id</TableHead>
-                <TableHead>Add Pics</TableHead>
+                <TableHead>Name of Place</TableHead>
+                <TableHead>User Id</TableHead> 
                 <TableHead>Address</TableHead>
                 <TableHead>Type</TableHead>
+                <TableHead>Type Specific</TableHead>
                 <TableHead>Location</TableHead>
                 <TableHead>City Province</TableHead>
                 <TableHead>City ID</TableHead>
@@ -201,12 +201,13 @@ const HomePage = () => {
                 <TableHead>Email</TableHead>
                 <TableHead>Landmark</TableHead>
                 <TableHead>Must Try</TableHead>
+                <TableHead>Store Hours</TableHead> 
                 <TableHead>Role</TableHead>
-                <TableHead>Img</TableHead>
-                <TableHead>Imgs</TableHead>
+                {/* <TableHead>Img</TableHead>
+                <TableHead>Imgs</TableHead> */}
                 <TableHead>Coords</TableHead>
                 <TableHead>Coords Spatial</TableHead>
-                <TableHead>Contact Number</TableHead>
+                <TableHead>Contact No</TableHead>
                 {/*
                   name, address, type, location, cityProvince, cityId, description, email, landmark, mustTry, role, img, imgs, coords, coordsSpatial, contactNumber
                 */}
@@ -221,13 +222,9 @@ const HomePage = () => {
 
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.name} onChange={(e) => handleInputChange(index, "name",  e.target.value)} /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[40px]' value={row.userId} onChange={(e) => handleInputChange(index, "userId",  e.target.value)} /> </TableCell>
-                      
-                      <TableCell>
-                        <Input type='file' className='w-[100px]' /> 
-                      </TableCell>
-
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.address} onChange={(e) => handleInputChange(index, "address",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.type} onChange={(e) => handleInputChange(index, "type",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.typeSpecific} onChange={(e) => handleInputChange(index, "type",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.location} onChange={(e) => handleInputChange(index, "location",  e.target.value)} /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.cityProvince} onChange={(e) => handleInputChange(index, "cityProvince",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.cityId} onChange={(e) => handleInputChange(index, "cityId",  e.target.value)}  /> </TableCell>
@@ -235,14 +232,28 @@ const HomePage = () => {
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.email} onChange={(e) => handleInputChange(index, "email",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.landmark} onChange={(e) => handleInputChange(index, "landmark",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.mustTry} onChange={(e) => handleInputChange(index, "mustTry",  e.target.value)} /> </TableCell>
+                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.storeHours} onChange={(e) => handleInputChange(index, "storeHours",  e.target.value)} /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.role} onChange={(e) => handleInputChange(index, "role",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.img} onChange={(e) => handleInputChange(index, "img",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.imgs} onChange={(e) => handleInputChange(index, "imgs",  e.target.value)} /> </TableCell>
+                      {/* <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.img} onChange={(e) => handleInputChange(index, "img",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.imgs} onChange={(e) => handleInputChange(index, "imgs",  e.target.value)} /> </TableCell> */}
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.coords} onChange={(e) => handleInputChange(index, "coords",  e.target.value)}  /> </TableCell>
                       <TableCell><div className='text-xs'>{JSON.stringify(row.coordsSpatial)}</div></TableCell>
+                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.contactNo} onChange={(e) => handleInputChange(index, "contactNo",  e.target.value)} /> </TableCell>
                       {/* <TableCell><Input value={row.coordsSpatial} onChange={(e) => handleInputChange(index, "coordsSpatial",  e.target.value)}  /> </TableCell> */}
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.contactNumber} onChange={(e) => handleInputChange(index, "contactNumber",  e.target.value)}  /> </TableCell> 
-                    
+
+                      {/*
+                      Name of Place
+                      Address
+                      Contact No.
+                      Website and/or FB Page
+                      Store Hours
+                      Coordinates
+                      Plus Code
+                      Email
+                      */}
+
+                      {/* <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.contactNumber} onChange={(e) => handleInputChange(index, "contactNumber",  e.target.value)}  /> </TableCell> 
+                     */}
                     </TableRow> 
                   ))
 
