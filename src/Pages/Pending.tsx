@@ -105,7 +105,7 @@ const Pending = () => {
         const temp = getRow.imgs
         temp.push(result.secure_url)
       }
-
+  
       setDataForImageUpload((prev:any) => prev.map((item:any) => (
         item.id === id ? getRow : item
       )))
@@ -174,7 +174,7 @@ const Pending = () => {
               </TableRow>
             </TableHeader> 
             <TableBody> 
-              {  
+              {/* {  
                 dataPending ? 
                   dataPending?.map((row:any, i:number) => ( 
                     <TableRow key={i}>  
@@ -212,7 +212,7 @@ const Pending = () => {
                   )) 
                 : 
                 "" 
-              }  
+              }   */}
 
               {
                 dataForImageUpload ?
