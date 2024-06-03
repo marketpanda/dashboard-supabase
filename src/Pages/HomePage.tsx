@@ -71,7 +71,9 @@ const HomePage = () => {
     fetchData()
   
   }, [])
-  
+
+
+
   const readExcel = (file:any) => {
     const promise = new Promise((resolve, reject) => {
       const fileReader = new FileReader()
@@ -110,7 +112,7 @@ const HomePage = () => {
 
                 newKey = loweredSplit.map(item => item.charAt(0).toUpperCase() + item.slice(1)).join("")
                 newKey = newKey.charAt(0).toLowerCase() + newKey.slice(1)
-                console.log(newKey)
+                // console.log(newKey)
               } else {
                 newKey = loweredSplit[0]
               }
@@ -129,10 +131,10 @@ const HomePage = () => {
 
           // we convert coords (lat, lng) to point geometry (using lnt, lat)
           // format goes as POINT(${latLng[1]} ${latLng[0]})
-          console.log(newObj.coordinates)
+          // console.log(newObj.coordinates)
           const splitCoords = newObj.coordinates.split(",")
           const parsePoint = [splitCoords]  
-          console.log(parsePoint)
+          // console.log(parsePoint)
 
           // const pointGeometry = `POINT(${parsePoint[1]},${parsePoint[0]})`
           const pointGeometry = { type: 'Point', coordinates: [parsePoint[1],parsePoint[0]]}
@@ -145,14 +147,26 @@ const HomePage = () => {
         })
       }
 
-      const loweredKeysObjectArrayData = convertKeysToLowerCase(data)
-      setTableData(loweredKeysObjectArrayData)
+      const addisCheckedToAllEntries = (myObj:any) => {
+        return myObj.map((item:any) => ({
+          isChecked: true,
+          ...item
+        }))
+      }
+
+    
+
+      const isCheckedData = addisCheckedToAllEntries(data)
+      console.log(isCheckedData)
+      const loweredKeysObjectArrayData = convertKeysToLowerCase(isCheckedData)
       console.log(loweredKeysObjectArrayData)
+      setTableData(loweredKeysObjectArrayData)
+     
     })
      
   }
 
-  const handleInputChange = (idx: number, rowName:string, tValue:string) => {
+  const handleInputChange = (idx: number, rowName:string, tValue:string | boolean) => {
     
     const updatedRowData = [...tableData]
     updatedRowData[idx][rowName] = tValue
@@ -195,16 +209,18 @@ const HomePage = () => {
           <Table>
             <TableHeader>
               <TableRow>
+                <TableHead>Checked</TableHead>
                 <TableHead>Name of Place</TableHead>
-                <TableHead>User Id</TableHead> 
+                {/* <TableHead>User Id</TableHead>  */}
                 <TableHead>Address</TableHead>
                 <TableHead>Type</TableHead>
                 <TableHead>Type Specific</TableHead>
-                <TableHead>Location</TableHead>
+                {/* <TableHead>Location</TableHead> */}
                 <TableHead>City Province</TableHead>
                 <TableHead>City ID</TableHead>
                 <TableHead className='w-[500px]'>Description</TableHead>
                 <TableHead>Email</TableHead>
+                <TableHead>Website and/or FbPage </TableHead>
                 <TableHead>Landmark</TableHead>
                 <TableHead>Must Try</TableHead>
                 <TableHead>Store Hours</TableHead> 
@@ -226,16 +242,25 @@ const HomePage = () => {
                     
                     <TableRow>  
 
+                      <TableCell>
+                        <Input
+                          className='flex text-start text-xs w-[20px]'
+                          type="checkbox"
+                          checked={row.ischecked}
+                          onChange={(e) => handleInputChange(index, "isChecked",  e.target.checked)}
+                           />
+                      </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.nameOfPlace} onChange={(e) => handleInputChange(index, "name",  e.target.value)} /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[40px]' value={row.userId} onChange={(e) => handleInputChange(index, "userId",  e.target.value)} /> </TableCell>
+                      {/* <TableCell><Input className='flex text-start text-xs w-[40px]' value={row.userId} onChange={(e) => handleInputChange(index, "userId",  e.target.value)} /> </TableCell> */}
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.address} onChange={(e) => handleInputChange(index, "address",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.type} onChange={(e) => handleInputChange(index, "type",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.typeSpecific} onChange={(e) => handleInputChange(index, "type",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.location} onChange={(e) => handleInputChange(index, "location",  e.target.value)} /> </TableCell>
+                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.category2} onChange={(e) => handleInputChange(index, "category2",  e.target.value)}  /> </TableCell>
+                      {/* <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.location} onChange={(e) => handleInputChange(index, "location",  e.target.value)} /> </TableCell> */}
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.cityProvince} onChange={(e) => handleInputChange(index, "cityProvince",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.cityId} onChange={(e) => handleInputChange(index, "cityId",  e.target.value)}  /> </TableCell>
                       <TableCell><Textarea className='w-[150px]' value={row.description} onChange={(e) => handleInputChange(index, "description",  e.target.value)} /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.email} onChange={(e) => handleInputChange(index, "email",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.websiteAndorFbPage} onChange={(e) => handleInputChange(index, "email",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.landmark} onChange={(e) => handleInputChange(index, "landmark",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.mustTry} onChange={(e) => handleInputChange(index, "mustTry",  e.target.value)} /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.storeHours} onChange={(e) => handleInputChange(index, "storeHours",  e.target.value)} /> </TableCell>

@@ -44,9 +44,7 @@ const DropZoneandPreview = ({ onDragImageOnRow, identifier } : {
     const clearImages = () => { 
         setPreview([])
         clearImagesInARow(identifier)
-    }
-
-     
+    } 
 
     const { getRootProps, getInputProps, 
         // acceptedFiles
