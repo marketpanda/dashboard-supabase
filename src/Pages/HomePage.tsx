@@ -140,7 +140,6 @@ const HomePage = () => {
           const pointGeometry = { type: 'Point', coordinates: [parsePoint[1],parsePoint[0]]}
 
           //point = { type: 'Point', coordinates: [39.807222,-76.984722]}
-
           newObj.coordsSpatial = pointGeometry
           
           return newObj
@@ -160,7 +159,9 @@ const HomePage = () => {
       console.log(isCheckedData)
       const loweredKeysObjectArrayData = convertKeysToLowerCase(isCheckedData)
       console.log(loweredKeysObjectArrayData)
-      setTableData(loweredKeysObjectArrayData)
+
+      const first10Entries = loweredKeysObjectArrayData.slice(0,10)
+      setTableData(first10Entries)
      
     })
      
@@ -247,7 +248,7 @@ const HomePage = () => {
                           className='flex text-start text-xs w-[20px]'
                           type="checkbox"
                           checked={row.ischecked}
-                          onChange={(e) => handleInputChange(index, "isChecked",  e.target.checked)}
+                          onChange={(e) => handleInputChange(index, "ischecked",  e.target.checked)}
                            />
                       </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.nameOfPlace} onChange={(e) => handleInputChange(index, "name",  e.target.value)} /> </TableCell>
