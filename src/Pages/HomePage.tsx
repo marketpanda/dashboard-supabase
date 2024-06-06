@@ -116,7 +116,6 @@ const HomePage = () => {
               } else {
                 newKey = loweredSplit[0]
               }
- 
               
               let value:any = obj[key]
               newObj[newKey] = value
@@ -128,16 +127,25 @@ const HomePage = () => {
           const makeArray  = []
           makeArray.push(newObj.imgs)
           newObj.imgs = makeArray
+          console.log(newObj.coordinates)
+          
+          //hardcode temporarily userId, should be pull from db
+          newObj.userId = 51
 
           // we convert coords (lat, lng) to point geometry (using lnt, lat)
           // format goes as POINT(${latLng[1]} ${latLng[0]})
           // console.log(newObj.coordinates)
-          const splitCoords = newObj.coordinates.split(",")
-          const parsePoint = [splitCoords]  
+          
+          
+          const splitCoords = newObj.coordinates.split(",").map((coord:string) => parseFloat(coord.trim()))
+          console.log(splitCoords)
+          const parsePoint = splitCoords  
+          console.log(parsePoint)
           // console.log(parsePoint)
-
+          
           // const pointGeometry = `POINT(${parsePoint[1]},${parsePoint[0]})`
           const pointGeometry = { type: 'Point', coordinates: [parsePoint[1],parsePoint[0]]}
+          console.log(pointGeometry)
 
           //point = { type: 'Point', coordinates: [39.807222,-76.984722]}
           newObj.coordsSpatial = pointGeometry
@@ -275,16 +283,7 @@ const HomePage = () => {
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.imgs} onChange={(e) => handleInputChange(index, "imgs",  e.target.value)} /> </TableCell> */}
                       {/* <TableCell><Input value={row.coordsSpatial} onChange={(e) => handleInputChange(index, "coordsSpatial",  e.target.value)}  /> </TableCell> */}
 
-                      {/*
-                      Name of Place
-                      Address
-                      Contact No.
-                      Website and/or FB Page
-                      Store Hours
-                      Coordinates
-                      Plus Code
-                      Email
-                      */}
+                      
 
                       {/* <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.contactNumber} onChange={(e) => handleInputChange(index, "contactNumber",  e.target.value)}  /> </TableCell> 
                      */}
