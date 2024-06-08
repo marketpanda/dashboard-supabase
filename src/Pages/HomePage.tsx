@@ -6,6 +6,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '.
 import { useEffect, useState } from 'react'
 import { Input } from '../components/ui/input'
 import { Textarea } from "../components/ui/textarea"
+import { v4 as uuidv4 } from 'uuid'
 
 
 //plus code
@@ -92,13 +93,11 @@ const HomePage = () => {
       fileReader.onerror=((error) => { reject(error )})
     })
 
-    promise.then((data) => {
-    
-      
-
+    promise.then((data) => { 
       const convertKeysToLowerCase = (myObj:any) => {
         return myObj.map((obj:any) => {
           const newObj:any = {}
+          newObj.id = uuidv4()
           for (let key in obj) {
              
             if (obj.hasOwnProperty(key)) {
@@ -109,10 +108,8 @@ const HomePage = () => {
 
               let newKey
               if (loweredSplit.length > 1) { 
-
                 newKey = loweredSplit.map(item => item.charAt(0).toUpperCase() + item.slice(1)).join("")
                 newKey = newKey.charAt(0).toLowerCase() + newKey.slice(1)
-                // console.log(newKey)
               } else {
                 newKey = loweredSplit[0]
               }
@@ -127,15 +124,13 @@ const HomePage = () => {
           const makeArray  = []
           makeArray.push(newObj.imgs)
           newObj.imgs = makeArray
-          console.log(newObj.coordinates)
+          
           
           //hardcode temporarily userId, should be pull from db
           newObj.userId = 51
 
           // we convert coords (lat, lng) to point geometry (using lnt, lat)
-          // format goes as POINT(${latLng[1]} ${latLng[0]})
-          // console.log(newObj.coordinates)
-          
+          // format goes as POINT(${latLng[1]} ${latLng[0]})  
           
           const splitCoords = newObj.coordinates.split(",").map((coord:string) => parseFloat(coord.trim()))
           console.log(splitCoords)
@@ -164,9 +159,9 @@ const HomePage = () => {
     
 
       const isCheckedData = addisCheckedToAllEntries(data)
-      console.log(isCheckedData)
+       
       const loweredKeysObjectArrayData = convertKeysToLowerCase(isCheckedData)
-      console.log(loweredKeysObjectArrayData)
+       
 
       const first10Entries = loweredKeysObjectArrayData.slice(0,10)
       setTableData(first10Entries)
@@ -185,9 +180,20 @@ const HomePage = () => {
 
   const handleBulkUpload = async() => {
 
-    const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_ROOT}/admin/bulkUpload`, tableData)
+    //submit only the checked items 
+    const isCheckdData = tableData.filter((item:any) => item.ischecked)
+    console.log(isCheckdData)
+
+    const response = await axios.post(`${import.meta.env.VITE_APP_BACKEND_ROOT}/admin/bulkUpload`, isCheckdData)
     const data = response.data
     console.log(data)
+  }
+
+  const toggleCheck = (id:string) => {
+    console.log(id)
+    console.log('toggle check')
+    const updatedToggleData = tableData.map((item:any) => item.id === id ? { ...item, ischecked: !item.ischecked } : item )
+    setTableData(updatedToggleData)
   }
 
  
@@ -212,8 +218,7 @@ const HomePage = () => {
           <CardHeader>
             <CardTitle>Watatrip Bulk Upload</CardTitle>
           </CardHeader>
-         
-            
+          
           
           <Table>
             <TableHeader>
@@ -249,7 +254,7 @@ const HomePage = () => {
                 tableData ?
                   tableData.map((row:any, index:number) => (
                     
-                    <TableRow>  
+                    <TableRow onClick={() => toggleCheck(row.id)}>  
 
                       <TableCell>
                         <Input
@@ -259,31 +264,29 @@ const HomePage = () => {
                           onChange={(e) => handleInputChange(index, "ischecked",  e.target.checked)}
                            />
                       </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.nameOfPlace} onChange={(e) => handleInputChange(index, "name",  e.target.value)} /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.nameOfPlace} onChange={(e) => handleInputChange(index, "name",  e.target.value)} /> </TableCell>
                       {/* <TableCell><Input className='flex text-start text-xs w-[40px]' value={row.userId} onChange={(e) => handleInputChange(index, "userId",  e.target.value)} /> </TableCell> */}
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.address} onChange={(e) => handleInputChange(index, "address",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.type} onChange={(e) => handleInputChange(index, "type",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.category2} onChange={(e) => handleInputChange(index, "category2",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.address} onChange={(e) => handleInputChange(index, "address",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.type} onChange={(e) => handleInputChange(index, "type",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.category2} onChange={(e) => handleInputChange(index, "category2",  e.target.value)}  /> </TableCell>
                       {/* <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.location} onChange={(e) => handleInputChange(index, "location",  e.target.value)} /> </TableCell> */}
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.cityProvince} onChange={(e) => handleInputChange(index, "cityProvince",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.cityId} onChange={(e) => handleInputChange(index, "cityId",  e.target.value)}  /> </TableCell>
-                      <TableCell><Textarea className='w-[150px]' value={row.description} onChange={(e) => handleInputChange(index, "description",  e.target.value)} /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.email} onChange={(e) => handleInputChange(index, "email",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.websiteAndorFbPage} onChange={(e) => handleInputChange(index, "email",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.landmark} onChange={(e) => handleInputChange(index, "landmark",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.mustTry} onChange={(e) => handleInputChange(index, "mustTry",  e.target.value)} /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.storeHours} onChange={(e) => handleInputChange(index, "storeHours",  e.target.value)} /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.role} onChange={(e) => handleInputChange(index, "role",  e.target.value)}  /> </TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.coordinates} onChange={(e) => handleInputChange(index, "coords",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.cityProvince} onChange={(e) => handleInputChange(index, "cityProvince",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.cityId} onChange={(e) => handleInputChange(index, "cityId",  e.target.value)}  /> </TableCell>
+                      <TableCell><Textarea onClick={(e) => e.stopPropagation()} className='w-[150px]' value={row.description} onChange={(e) => handleInputChange(index, "description",  e.target.value)} /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.email} onChange={(e) => handleInputChange(index, "email",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.websiteAndorFbPage} onChange={(e) => handleInputChange(index, "email",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.landmark} onChange={(e) => handleInputChange(index, "landmark",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.mustTry} onChange={(e) => handleInputChange(index, "mustTry",  e.target.value)} /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.storeHours} onChange={(e) => handleInputChange(index, "storeHours",  e.target.value)} /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.role} onChange={(e) => handleInputChange(index, "role",  e.target.value)}  /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.coordinates} onChange={(e) => handleInputChange(index, "coords",  e.target.value)}  /> </TableCell>
                       <TableCell><div className='text-xs'>{JSON.stringify(row.coordsSpatial)}</div></TableCell>
-                      <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.contactNo} onChange={(e) => handleInputChange(index, "contactNo",  e.target.value)} /> </TableCell>
+                      <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.contactNo} onChange={(e) => handleInputChange(index, "contactNo",  e.target.value)} /> </TableCell>
                       {/*
                       */}
                       {/* <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.img} onChange={(e) => handleInputChange(index, "img",  e.target.value)}  /> </TableCell>
                       <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.imgs} onChange={(e) => handleInputChange(index, "imgs",  e.target.value)} /> </TableCell> */}
                       {/* <TableCell><Input value={row.coordsSpatial} onChange={(e) => handleInputChange(index, "coordsSpatial",  e.target.value)}  /> </TableCell> */}
-
-                      
 
                       {/* <TableCell><Input className='flex text-start text-xs w-[100px]' value={row.contactNumber} onChange={(e) => handleInputChange(index, "contactNumber",  e.target.value)}  /> </TableCell> 
                      */}
