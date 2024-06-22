@@ -3,10 +3,12 @@ import axios from 'axios'
 import { Button } from '../components/ui/button'
 import { CardContent, CardFooter, CardHeader, CardTitle } from '../components/ui/card' 
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
-import { useEffect, useState } from 'react'
+import { ReactEventHandler, useEffect, useState } from 'react'
 import { Input } from '../components/ui/input'
 import { Textarea } from "../components/ui/textarea"
 import { v4 as uuidv4 } from 'uuid'
+import { parse } from 'path'
+import { link } from 'fs'
 
 
 //plus code
@@ -116,34 +118,42 @@ const HomePage = () => {
               
               let value:any = obj[key]
               newObj[newKey] = value
-            }
-
+            } 
           }
 
           //make imgs to be array
           const makeArray  = []
           makeArray.push(newObj.imgs)
-          newObj.imgs = makeArray
-          
+          newObj.imgs = makeArray 
           
           //hardcode temporarily userId, should be pull from db
           newObj.userId = 51
 
-          // we convert coords (lat, lng) to point geometry (using lnt, lat)
+          // we convert coords (lat, lng) to point geometry (using lng, lat)
           // format goes as POINT(${latLng[1]} ${latLng[0]})  
           
-          const splitCoords = newObj.coordinates.split(",").map((coord:string) => parseFloat(coord.trim()))
-          console.log(splitCoords)
-          const parsePoint = splitCoords  
+           
+          
+          // const splitCoords = newObj.coordinates.split(",").map((coord:string) => parseFloat(coord.trim()))
+          const splitCoords = newObj.coordinates.split(",") 
+
+          
+          const parsePoint = splitCoords.map((item:string) => parseFloat(item.trim()))
           console.log(parsePoint)
-          // console.log(parsePoint)
+          console.log(typeof parsePoint[0])
+
+          newObj.coordinates = parsePoint
+          // newObj.coordinates = ['14.52 635', '121.15795']
+          console.log(newObj.coordinates)
+          
           
           // const pointGeometry = `POINT(${parsePoint[1]},${parsePoint[0]})`
           const pointGeometry = { type: 'Point', coordinates: [parsePoint[1],parsePoint[0]]}
           console.log(pointGeometry)
 
           //point = { type: 'Point', coordinates: [39.807222,-76.984722]}
-          newObj.coordsSpatial = pointGeometry
+          // newObj.coordsSpatial = pointGeometry
+          newObj.coordsSpatial =  { type: 'Point', coordinates: [14.52635, 121.15795]}
           
           return newObj
         })
@@ -163,7 +173,7 @@ const HomePage = () => {
       const loweredKeysObjectArrayData = convertKeysToLowerCase(isCheckedData)
        
 
-      const first10Entries = loweredKeysObjectArrayData.slice(0,10)
+      const first10Entries = loweredKeysObjectArrayData.slice(0,5)
       setTableData(first10Entries)
      
     })
@@ -190,10 +200,23 @@ const HomePage = () => {
   }
 
   const toggleCheck = (id:string) => {
-    console.log(id)
-    console.log('toggle check')
     const updatedToggleData = tableData.map((item:any) => item.id === id ? { ...item, ischecked: !item.ischecked } : item )
     setTableData(updatedToggleData)
+  }
+
+  const fileUrl = "../assets/bulkUploadTemplate.xlsx"
+  const fileName = "bulkUploadTemplate.xlsx"
+
+  const handleDownload = (e:React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
+    e.preventDefault()
+    const link = document.createElement('a')
+  
+    link.href = fileUrl
+    link.download = fileName
+    document.body.appendChild(link)
+    link.click()
+    document.body.removeChild(link)
+  
   }
 
  
@@ -305,6 +328,13 @@ const HomePage = () => {
                             readExcel(file) 
                           }} />
 
+                        </CardHeader>
+                        <CardHeader> 
+                          <Button  className='w-1/2'> 
+                            <a onClick={handleDownload}>
+                              Use the template here (*.xlsx) 
+                            </a>
+                          </Button> 
                         </CardHeader>
 
                       </TableCell>
