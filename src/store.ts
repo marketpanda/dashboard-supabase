@@ -1,4 +1,3 @@
- 
 import axios from 'axios'
 import { create } from 'zustand'
 
@@ -10,7 +9,6 @@ type imageStore = {
     updateRowSuccessfulImageUpload: (id: string | number, secureUrlCloudinary: string[]) => Promise<void>,
     clearImagesInARow: (id: string) => void,
     echoSample: (imageArray: any, id: string) => void,
-   
 }
 
 export const useImageStore = create<imageStore>((set) => ({
@@ -69,13 +67,7 @@ export const useImageStore = create<imageStore>((set) => ({
                 ))
     
                 return { ...state, imgs: updatedImgs }
-            })
-    
-            //comment out below anytime, used for debugging
-            set((state) => {
-                console.log(state.imgs)
-                return state
-            })
+            }) 
 
         } catch (error) {
             console.log(error)
@@ -93,11 +85,6 @@ export const useImageStore = create<imageStore>((set) => ({
             const filterRows = state.imgs.filter((item:Image) => item.id !== id)
             console.log(filterRows)
             return  { imgs: filterRows }  
-        }) 
-
-        set((state) => {
-            console.log(`cleared  ${id}`, state.imgs)
-            return state
-        })
+        })  
     },
 }))

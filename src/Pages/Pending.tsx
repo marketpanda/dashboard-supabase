@@ -1,7 +1,6 @@
 import axios from 'axios'
 import {  useEffect, useState } from 'react'
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '../components/ui/table'
-
+import { Table, TableBody, TableCell, TableRow } from '../components/ui/table'
 
 //drag and drop 
 import DropZoneandPreview from '../components/DropZoneandPreview'
@@ -160,7 +159,7 @@ const Pending = () => {
     <>      
       <div>
       <Table>
-            <TableHeader>
+            {/* <TableHeader>
               <TableRow>
                 <TableHead>Name</TableHead> 
                 <TableHead>Add Pics</TableHead>
@@ -172,7 +171,7 @@ const Pending = () => {
                 <TableHead>Coords</TableHead>
                 <TableHead>Coords Spatial</TableHead> 
               </TableRow>
-            </TableHeader> 
+            </TableHeader>  */}
             <TableBody> 
               {/* {  
                 dataPending ? 
