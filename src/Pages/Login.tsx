@@ -23,7 +23,7 @@ const Login = () => {
                         </div> 
                         <Form.Control asChild>
                             <input
-                                className="mb-5 box-border w-full bg-blackA2 shadow-black inline-flex h-[35px] appearance-none items-center justify-center px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none hover:shadow-[0_0_0_1px_black] focus:shadow-[0_0_0_2px_black] selection:color-white selection:bg-red-600 selection:text-white"
+                                className="mb-5 w-full bg-gray-50 shadow-gray inline-flex h-[35px] appearance-none items-center justify-center px-[10px] text-[15px] leading-none shadow-[0_0_0_1px_gray] outline-none hover:shadow-[0_0_0_3px_gray] focus:shadow-[0_0_0_2px_black] hover:outline-none selection:bg-red-600 selection:text-white"
                                 type="email"
                                 required
                             />
@@ -39,7 +39,7 @@ const Login = () => {
                         </div> 
                         <Form.Control asChild>
                         <input
-                                className="mb-12 box-border w-full bg-blackA2 shadow-black inline-flex h-[35px] appearance-none items-center justify-center px-[10px] text-[15px] leading-none shadow-[0_0_0_1px] outline-none hover:shadow-[0_0_0_1px_black] focus:shadow-[0_0_0_2px_black] selection:color-white selection:bg-red-600 selection:text-white"
+                                className="mb-12 w-full bg-gray-50 shadow-gray inline-flex h-[35px] appearance-none items-center justify-center px-[10px] text-[15px] leading-none shadow-[0_0_0_1px_gray] outline-none hover:shadow-[0_0_0_3px_gray] focus:shadow-[0_0_0_2px_black] hover:outline-none selection:bg-red-600 selection:text-white"
                                 type="password"
                                 required
                             />
@@ -53,10 +53,10 @@ const Login = () => {
                     <div className="w-full text-slate-700 text-sm mt-3">
                         <ul className="flex flex-row gap-4 w-full justify-end">
                             <li>
-                                <a href="#" className="hover:text-black hover:underline">Forgot Username?</a>
+                                <a href="#" className="hover:text-red-700 hover:underline">Forgot Username?</a>
                             </li>
                             <li>
-                                <a href="#" className="hover:text-black hover:underline">Forgot Password?</a>
+                                <a href="#" className="hover:text-red-700 hover:underline">Forgot Password?</a>
                             </li>
                             
                         </ul>
@@ -76,7 +76,7 @@ const Login = () => {
                                 </a>
                             </li>
                             <li>
-                                <a href="https://www.google.com" target="_blank" rel="noopener noreferrer" className="my-link-class">
+                                <a href="https://www.google.com" target="_blank" rel="noopener noreferrer" className="hover:text-black">
                                     Learn more about the app
                                 </a>
                                 
