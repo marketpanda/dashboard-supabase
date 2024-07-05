@@ -1,5 +1,5 @@
  
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import '../App.css'
 import Navbar from '../components/Navbar' 
 
@@ -22,9 +22,18 @@ import { useState } from 'react'
 import { cn } from '../lib/utils.ts'
 import Pending from '../Pages/Pending.tsx' 
 
-const DashBoardAuthenticated = () => {
+const DashBoardAuthenticated = ({token}: {token:any}) => {
 
     const [isCollapsed, setIsCollapsed] = useState(false) 
+
+    let navigate = useNavigate()
+
+    const stringToken  = JSON.stringify(token.user.user_metadata.email, null, 2)
+
+    const logout = () => {
+        sessionStorage.removeItem('token')
+        navigate('/')
+    }
     return (
     <>
         <Card className='flex overflow-hidden'>
@@ -48,7 +57,8 @@ const DashBoardAuthenticated = () => {
             }}
             className={cn( isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
             >
-
+            <div className='text-xs'>Welcome back <pre>{ JSON.parse(stringToken) }</pre></div>
+            <button onClick={logout}>Logout</button>
             <Navbar isCollapsed={isCollapsed} links={[
                 {
                 location: "/",
@@ -85,7 +95,7 @@ const DashBoardAuthenticated = () => {
                 icon: Users2,
                 variant: "ghost"
                 },
-            ]} />
+            ]} /> 
             </ResizablePanel>
 
             <ResizableHandle withHandle />
