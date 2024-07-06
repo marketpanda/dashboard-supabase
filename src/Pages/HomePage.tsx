@@ -8,6 +8,7 @@ import { Input } from '../components/ui/input'
 import { Textarea } from "../components/ui/textarea"
 import { v4 as uuidv4 } from 'uuid'
 import { useQuery } from '@tanstack/react-query'
+import { Props } from './DashBoardAuthenticated'
 
 
 //plus code
@@ -20,12 +21,12 @@ import { useQuery } from '@tanstack/react-query'
 // import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 // import { addPlaceRow, fetchSample } from '../api/api'
 
-const HomePage = () => {
+const HomePage:React.FC<Props> = ({token}) => {
 
   const [tableData, setTableData] = useState<any>(null)
 
   const [bulkUploadStatus, setBulkUploadStatus] = useState<string | null>(null)
-
+  
 
   const handleBulkUploadQueryFn = async(tableDataConst:any) => {
     //submit only the checked items 

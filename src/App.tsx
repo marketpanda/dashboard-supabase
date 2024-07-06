@@ -1,47 +1,35 @@
-import { Route, Routes } from 'react-router-dom'
+import { Route, Routes, useNavigate } from 'react-router-dom'
 import DashBoardAuthenticated from './Pages/DashBoardAuthenticated.tsx'
 import Login from './Pages/Login.tsx'
 import Signup from './Pages/Signup.tsx'
 import { useEffect, useState } from 'react'
 
-function App() { 
-
-  // const isLogged = false 
-  // if (isLogged) { 
-  //   return (
-  //      <DashBoardAuthenticated />
-  //   )
-  // } else {
-  //   return ( 
-  //      <Login /> 
-  //   ) 
-  // }
-
-  
+function App() {  
 
   const [token, setToken] = useState<string | null>(null)
+  const navigate = useNavigate()
 
-  if (token) {
-    sessionStorage.setItem('token', JSON.stringify(token))
-  }
-
+  
   useEffect(() => {
-
     const tokenString = sessionStorage.getItem('token')
     if (tokenString) {
-      let data:string = JSON.parse(tokenString) 
-      setToken(data)
+      setToken(tokenString)
     }
   }, [])
+
+  useEffect(() => { 
+    if (token) {
+      sessionStorage.setItem('token', token)
+    }
+  }, [token])
 
   return (
     <>
       <Routes>
-        <Route path={'/'} element={<Login setToken={setToken} />} />
-        { token ?
-          <Route path={'/dashboard'} element={<DashBoardAuthenticated token={token} />} /> :
-          ""
-        }  
+        {/* <Route path={'/'} element={<DashBoardAuthenticated token={token} />} /> */}
+        
+        <Route path={'/'} element={<DashBoardAuthenticated token={token} setToken={setToken} />} />
+        <Route path={'/dashboard'} element={<DashBoardAuthenticated token={token} setToken={setToken} />} />
         <Route path={'/login'} element={<Login setToken={setToken} />} />
         <Route path={'/signup'} element={<Signup />} />
       </Routes>

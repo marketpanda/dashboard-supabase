@@ -4,12 +4,10 @@ import { useState } from "react"
 import { supabase } from '../client'
 import FooterGuest from "./FooterGuest"
 import { useNavigate } from "react-router-dom"
+import { Props } from "./DashBoardAuthenticated"
 
-export interface LoginProps {
-    setToken: React.Dispatch<React.SetStateAction<string | null>>
-}
 
-const Login:React.FC<LoginProps> = ({ setToken }) => {
+const Login:React.FC<Props> = ({ setToken }) => {
 
     type SignInDetails = {
         email: string | null,
@@ -43,7 +41,7 @@ const Login:React.FC<LoginProps> = ({ setToken }) => {
               if (error) throw error
               console.log('received ', data )
 
-              setToken(data)
+              setToken(JSON.stringify(data))
               navigate('/')
               
             } catch (error) {
@@ -54,8 +52,8 @@ const Login:React.FC<LoginProps> = ({ setToken }) => {
         } else {
             console.log("Email and password is required")
         }
-         
     }   
+
     return ( 
         <div className="w-full h-screen bg-gray-100 fixed flex justify-center items-center"> 
             <Card className="p-4 bg-white w-full sm:w-[450px] mx-2 h-screen relative shadow">
