@@ -1,14 +1,19 @@
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import DashBoardAuthenticated from './Pages/DashBoardAuthenticated.tsx'
 import Login from './Pages/Login.tsx'
 import Signup from './Pages/Signup.tsx'
 import { useEffect, useState } from 'react'
+import HomePage from './Pages/HomePage.tsx'
+import Pending from './Pages/Pending.tsx'
+import Places from './Pages/Places.tsx'
+import Rentals from './Pages/Rentals.tsx'
+import Profiles from './Pages/Profiles.tsx'
+import NotFoundPage from './Pages/NotFoundPage.tsx'
+import AuthenticatedRoute from './Pages/AuthenticatedRoute.tsx'
 
 function App() {  
 
   const [token, setToken] = useState<string | null>(null)
-  const navigate = useNavigate()
-
   
   useEffect(() => {
     const tokenString = sessionStorage.getItem('token')
@@ -26,12 +31,21 @@ function App() {
   return (
     <>
       <Routes>
-        {/* <Route path={'/'} element={<DashBoardAuthenticated token={token} />} /> */}
-        
-        <Route path={'/'} element={<DashBoardAuthenticated token={token} setToken={setToken} />} />
-        <Route path={'/dashboard'} element={<DashBoardAuthenticated token={token} setToken={setToken} />} />
+        {/* <Route path={'/'} element={<DashBoardAuthenticated token={token} />} /> */} 
+        <Route element={<AuthenticatedRoute token={token} />}>
+          <Route path={'/dashboard'} element={<DashBoardAuthenticated token={token} setToken={setToken} />}>
+            <Route path="home" element={<HomePage />} /> 
+            <Route path="pending" element={<Pending />} />
+            <Route path="places" element={<Places />} />
+            <Route path="rentals" element={<Rentals />} />
+            <Route path="profiles" element={<Profiles />} />
+          </Route>
+        </Route>
+
+        {/* <Route path={'/dashboard'} element={<DashBoardAuthenticated token={token} setToken={setToken} />} /> */}
         <Route path={'/login'} element={<Login setToken={setToken} />} />
         <Route path={'/signup'} element={<Signup />} />
+        <Route path="*" element={<NotFoundPage />} />
       </Routes>
     </>
   )

@@ -7,8 +7,9 @@ import DropZoneandPreview from '../components/DropZoneandPreview'
 import { MapPin } from 'lucide-react'
 import { Button } from '../components/ui/button'
 import { useImageStore } from '../store'
+import { Props } from './DashBoardAuthenticated'
 
-const Pending = () => { 
+const Pending:React.FC<Props> = () => { 
   type imageUploadRow = {
     id: string,
     name: string, 
@@ -18,6 +19,7 @@ const Pending = () => {
     imgs: string[]
   }
 
+  console.log('testing pending page')
   const [dataPending, setDataPending] = useState<any>(null)  
   const [dataForImageUpload, setDataForImageUpload] = useState<imageUploadRow[] | null>(null) 
   

@@ -1,4 +1,3 @@
-import React from 'react'
 import watatripLogo from '../assets/watatrip_logo-transparent.png'
 
 const FooterGuest = () => {

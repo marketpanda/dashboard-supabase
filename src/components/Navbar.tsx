@@ -17,24 +17,32 @@ type NavProps = {
   }[]
 }
 
-
 const Navbar = ({links, isCollapsed}:NavProps) => {
   
-  const location = useLocation()
-  const pathName2 = location.pathname
+  const { pathname } = useLocation() 
+
+  const addParentToLocation = (location:string):string => {
+    if (!location.startsWith('/dashboard')) {
+      return '/dashboard' + location
+    }
+    return location
+  }
+
+  const updatedLinks = links.map((link) => ({
+    ...link, location: addParentToLocation(link.location)
+  }))
 
   return (
     <div className='bg-white'>
       <div className='flex justify-center'><img  src={watatripLogo} alt="Watatrip Logo" className='w-[100px]' /></div>
-      {/* <div className='flex justify-center'><img  src="../assets/watatrip_logo-transparent.png" alt="Watatrip Logo" className='w-[100px]' /></div> */}
       <div data-collapsed={isCollapsed} className='group flex flex-col gap-4 py-2 data-[collapsed=true]:py-2'>
 
-        <nav className='grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2'>
+        <nav className='sticky top-0 grid gap-1 px-2 group-[[data-collapsed=true]]:justify-center group-[[data-collapsed=true]]:px-2'>
           {
-            links.map((link, index) => 
+            updatedLinks.map((link, index) => 
               isCollapsed ? (
                 <Link to={link.location} className={cn(buttonVariants({ variant: link.variant, size : "icon" }), "h-9 w-9",
-                pathName2 === link.location 
+                pathname === link.location 
                     ? "bg-muted hover:bg-muted"
                     : "hover:bg-transparent hover:underline"  
                  )}>
@@ -43,24 +51,14 @@ const Navbar = ({links, isCollapsed}:NavProps) => {
               ) : (
 
                 <Link key={index} to={link.location} className={cn(buttonVariants({ variant: link.variant, size : "sm" }), 
-                  pathName2 === link.location 
+                  pathname === link.location 
                     ? "bg-muted hover:bg-muted"
                     : "hover:bg-transparent hover:underline",
                   "justify-start",
                   )}>
                   <link.icon className='mr-2 h-4 w-4' />
                   {link.label}
-                  {/* {link.label && (
-                    <span
-                      className={cn(
-                        "ml-auto",
-                        link.variant === "default" &&
-                          "text-background dark:text-white"
-                      )}
-                    >
-                      {link.label}
-                    </span>
-                  )} */}
+                 
                 </Link>
               )
             )

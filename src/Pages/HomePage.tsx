@@ -21,7 +21,7 @@ import { Props } from './DashBoardAuthenticated'
 // import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 // import { addPlaceRow, fetchSample } from '../api/api'
 
-const HomePage:React.FC<Props> = ({token}) => {
+const HomePage:React.FC<Props> = () => {
 
   const [tableData, setTableData] = useState<any>(null)
 

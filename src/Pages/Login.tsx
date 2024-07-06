@@ -1,6 +1,6 @@
 import { Card } from "../components/ui/card" 
 import * as Form from '@radix-ui/react-form' 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { supabase } from '../client'
 import FooterGuest from "./FooterGuest"
 import { useNavigate } from "react-router-dom"
@@ -40,9 +40,8 @@ const Login:React.FC<Props> = ({ setToken }) => {
 
               if (error) throw error
               console.log('received ', data )
-
-              setToken(JSON.stringify(data))
-              navigate('/')
+              if (setToken) setToken(JSON.stringify(data))
+              navigate('/dashboard')
               
             } catch (error) {
                 console.log(error)
@@ -53,6 +52,11 @@ const Login:React.FC<Props> = ({ setToken }) => {
             console.log("Email and password is required")
         }
     }   
+
+    useEffect(() => {
+        const tokenString = sessionStorage.getItem('token')
+        if (tokenString) navigate('/dashboard')
+    }, [navigate])
 
     return ( 
         <div className="w-full h-screen bg-gray-100 fixed flex justify-center items-center"> 

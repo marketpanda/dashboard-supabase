@@ -1,14 +1,7 @@
  
-import { Route, Routes, useNavigate } from 'react-router-dom'
+import { Outlet, useNavigate } from 'react-router-dom'
 import '../App.css'
 import Navbar from '../components/Navbar' 
-
-import HomePage from './HomePage'
-import Profiles from './Profiles'
-import Rentals from './Rentals'
-import Places from './Places'
-import NotFoundPage from './NotFoundPage'
-
 import { Card } from '../components/ui/card'
 import { ResizableHandle, ResizablePanel, ResizablePanelGroup } from '../components/ui/resizable'
 import { 
@@ -20,7 +13,6 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 import { cn } from '../lib/utils.ts'
-import Pending from '../Pages/Pending.tsx' 
 
 export interface Props {
     token?: string | null
@@ -32,28 +24,26 @@ const DashBoardAuthenticated:React.FC<Props> = ({token, setToken}) => {
     const [isCollapsed, setIsCollapsed] = useState(false) 
 
     let navigate = useNavigate()
-
     let stringToken
     
     useEffect(() => {
-        
         if (!token) {
             navigate('/login')
         } 
-
     }, [token, navigate])
 
     const logout = () => {
         sessionStorage.removeItem('token')
-        setToken(null)
+        if (setToken) {
+            setToken(null)
+        }
     }
     return (
     <>
-        <Card className='flex overflow-hidden'>
+        <Card className='flex overflow-hidden max-w-[1024px] mx-auto mt-2'> 
             <ResizablePanelGroup direction='horizontal'
                 onLayout={(sizes:number[]) => {
-                document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`}}
-            >
+                document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`}}>
                 <ResizablePanel
                 defaultSize={20}
                 collapsible={true}
@@ -70,11 +60,11 @@ const DashBoardAuthenticated:React.FC<Props> = ({token, setToken}) => {
                 }}
                 className={cn( isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
                 >
-                <div className='text-xs'>Welcome back <pre>{ stringToken }</pre></div>
+                <div className='text-xs'>Welcome back <pre>{ JSON.stringify(stringToken) }</pre></div>
                 <button onClick={logout}>Logout</button>
                 <Navbar isCollapsed={isCollapsed} links={[
                     {
-                    location: "/",
+                    location: "/home",
                     title: "home",
                     label: "Bulk Upload",
                     icon: Inbox,
@@ -114,14 +104,7 @@ const DashBoardAuthenticated:React.FC<Props> = ({token, setToken}) => {
                 <ResizableHandle withHandle />
 
                 <ResizablePanel>
-                <Routes> 
-                    <Route index element={<HomePage token={token} />} /> 
-                    <Route path="/pending" element={<Pending />} />
-                    <Route path="/places" element={<Places />} />
-                    <Route path="/rentals" element={<Rentals />} />
-                    <Route path="/profiles" element={<Profiles />} />
-                    <Route path="*" element={<NotFoundPage />} />
-                </Routes> 
+                    <Outlet /> 
                 </ResizablePanel>
             </ResizablePanelGroup>
         </Card> 

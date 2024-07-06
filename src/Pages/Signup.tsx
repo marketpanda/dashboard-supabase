@@ -1,12 +1,18 @@
 import { Card } from "../components/ui/card" 
 import * as Form from '@radix-ui/react-form'
 
-import { useState } from "react"
+import { useEffect, useState } from "react"
 import { supabase } from '../client'
 import FooterGuest from "./FooterGuest"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 
 const Signup = () => {
+    
+    let navigate = useNavigate()
+    useEffect(() => {   
+        const tokenString = sessionStorage.getItem('token')
+        if (tokenString) navigate('/dashboard')
+    }, [navigate])
 
     type SignUpDetails = {
         email: string | null,
