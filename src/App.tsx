@@ -38,9 +38,12 @@ function App() {
     <>
       <Routes>
         <Route path={'/'} element={<Login setToken={setToken} />} />
+        { token ?
+          <Route path={'/dashboard'} element={<DashBoardAuthenticated token={token} />} /> :
+          ""
+        }  
         <Route path={'/login'} element={<Login setToken={setToken} />} />
         <Route path={'/signup'} element={<Signup />} />
-       { token ? <Route path={'/dashboard'} element={<DashBoardAuthenticated token={token} />} /> : ""}
       </Routes>
     </>
   )

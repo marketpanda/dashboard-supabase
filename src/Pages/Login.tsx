@@ -5,7 +5,11 @@ import { supabase } from '../client'
 import FooterGuest from "./FooterGuest"
 import { useNavigate } from "react-router-dom"
 
-const Login = ({ setToken }) => {
+export interface LoginProps {
+    setToken: React.Dispatch<React.SetStateAction<string | null>>
+}
+
+const Login:React.FC<LoginProps> = ({ setToken }) => {
 
     type SignInDetails = {
         email: string | null,
