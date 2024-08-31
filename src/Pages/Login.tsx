@@ -6,7 +6,6 @@ import FooterGuest from "./FooterGuest"
 import { useNavigate } from "react-router-dom"
 import { Props } from "./DashBoardAuthenticated"
 
-
 const Login:React.FC<Props> = ({ setToken }) => {
 
     type SignInDetails = {
@@ -116,7 +115,6 @@ const Login:React.FC<Props> = ({ setToken }) => {
                             <li>
                                 <a href="#" className="hover:text-red-700 hover:underline">Forgot Password?</a>
                             </li>
-                            
                         </ul>
                     </div>
                 </Form.Root> 
