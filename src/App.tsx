@@ -31,6 +31,7 @@ function App() {
 
   return (
     <>
+       
       <Routes>
         {/* <Route path={'/'} element={<DashBoardAuthenticated token={token} />} /> */} 
         <Route element={<AuthenticatedRoute token={token} />}>
@@ -49,6 +50,7 @@ function App() {
         <Route path={'/signup'} element={<Signup />} />
         <Route path="*" element={<NotFoundPage />} />
       </Routes>
+       
     </>
   )
    

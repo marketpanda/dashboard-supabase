@@ -40,7 +40,7 @@ const DashBoardAuthenticated:React.FC<Props> = ({token, setToken}) => {
     }
     return (
     <>
-        <Card className='flex overflow-hidden max-w-[1024px] mx-auto mt-2'> 
+        <Card className='flex overflow-hidden max-w-[1024px] mx-auto mt-2'>  
             <ResizablePanelGroup direction='horizontal'
                 onLayout={(sizes:number[]) => {
                 document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`}}>

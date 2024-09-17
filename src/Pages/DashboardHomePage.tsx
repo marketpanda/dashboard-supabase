@@ -10,7 +10,6 @@ import { v4 as uuidv4 } from 'uuid'
 import { useQuery } from '@tanstack/react-query'
 import { Props } from './DashBoardAuthenticated'
 
-
 //plus code
 // const OpenLocationCode = require('open-location-code').OpenLocationCode; 
 
@@ -25,8 +24,7 @@ const DashboardHomePage:React.FC<Props> = () => {
 
   const [tableData, setTableData] = useState<any>(null)
 
-  const [bulkUploadStatus, setBulkUploadStatus] = useState<string | null>(null)
-  
+  const [bulkUploadStatus, setBulkUploadStatus] = useState<string | null>(null) 
 
   const handleBulkUploadQueryFn = async(tableDataConst:any) => {
     //submit only the checked items 
@@ -148,7 +146,6 @@ const DashboardHomePage:React.FC<Props> = () => {
           // we convert coords (lat, lng) to point geometry (using lng, lat)
           // format goes as POINT(${latLng[1]} ${latLng[0]})  
           
-           
           
           // const splitCoords = newObj.coordinates.split(",").map((coord:string) => parseFloat(coord.trim()))
           const splitCoords = newObj.coordinates.split(",") 
@@ -182,12 +179,9 @@ const DashboardHomePage:React.FC<Props> = () => {
         }))
       }
 
-    
-
       const isCheckedData = addisCheckedToAllEntries(data)
        
       const loweredKeysObjectArrayData = convertKeysToLowerCase(isCheckedData)
-       
 
       const first10Entries = loweredKeysObjectArrayData.slice(0,5)
       setTableData(first10Entries)
@@ -398,24 +392,21 @@ const DashboardHomePage:React.FC<Props> = () => {
                               </TableHead>
                             
                           </TableRow> */}
-                      
                     
-                    
-                  </TableBody>
-
+                  </TableBody> 
                 </Table>
                 
-                <CardFooter className='w-full flex justify-end pt-4'> 
+                <CardFooter className='w-full flex justify-end pt-4 gap-2'>
+                  <Button  className='w-1/2'> 
+                    <a onClick={handleDownload}>
+                      Download the template here (*.xlsx) 
+                    </a>
+                  </Button> 
                   <Button onClick={() => handleBulkUpload(tableData)} className='w-1/2'>Submit</Button>
                 </CardFooter>
-              </>
-
+              </> 
             )
-          }
-         
-          
-
-          
+          } 
          
         </div>
         <div  >

@@ -17,9 +17,8 @@ const Pending:React.FC<Props> = () => {
     address: string,
     cityProvince: string,
     imgs: string[]
-  }
-
-  console.log('testing pending page')
+  } 
+  
   const [dataPending, setDataPending] = useState<any>(null)  
   const [dataForImageUpload, setDataForImageUpload] = useState<imageUploadRow[] | null>(null) 
   
