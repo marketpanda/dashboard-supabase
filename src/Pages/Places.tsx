@@ -3,20 +3,40 @@
 import axios from "axios"
 import { useEffect, useState } from "react"
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table"
-import { Input } from "../components/ui/input"
-import { Textarea } from "../components/ui/textarea"
+import { Input } from "../components/ui/input" 
 
 const Places = () => {
 
-  const [places, setPlaces] = useState(null)
+  interface PlaceProps {
+    isChecked?: boolean
+    name?: string
+    address?: string
+    type?: string
+    category?: string
+    cityProvince?: string
+    cityId?: number
+    description?: string
+    email?: string
+    websiteAndorFbPage?: string
+    landmark?: string
+    mustTry?: string
+    storeHours?: string
+    role?: string
+    coordinates?: string
+    coordsSpatial?: string
+    contactNo?: string
+
+  }
+  const [places, setPlaces] = useState<PlaceProps[] | null>(null)
 
   useEffect(() => {
     const fetchPlaces = async() => {
       try {
         const response = await axios.get(`${import.meta.env.VITE_APP_BACKEND_ROOT}/admin/places`)
         const data = response.data
-        if (data) setPlaces(data)
-        console.log(data)
+
+        if (!data) return
+        if (data) setPlaces(data) 
 
         setPlaces(data)
       } catch (error) {
@@ -28,8 +48,7 @@ const Places = () => {
   }, [])
 
   return (
-    <>
-      <div>Places</div>
+    <> 
       {
         places &&  <>
         <Table>
@@ -63,45 +82,54 @@ const Places = () => {
          </TableHeader> 
          <TableBody>
            {
-             places && places.map((row:any, index:number) => (
-                 
-                 <TableRow onClick={() => console.log('hi')}>  
+             places && places.map((row:any, _index:number) => {
 
-                   <TableCell>
-                     <Input
-                       className='flex text-start text-xs w-[20px]'
-                       type="checkbox"
-                       checked={row.ischecked}
-                     
-                       />
-                   </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.name}  /> </TableCell>
-                   
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.address}    /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.type}   /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.category}   /> </TableCell>
-                   
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.cityProvince}   /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.cityId}    /> </TableCell>
-                   <TableCell><Textarea onClick={(e) => e.stopPropagation()} className='w-[150px]' value={row.description} o /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.email}   /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.websiteAndorFbPage}    /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.landmark}   /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.mustTry}   /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.storeHours} /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.role}    /> </TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.coordinates}    /> </TableCell>
-                   <TableCell><div className='text-xs'>{JSON.stringify(row.coordsSpatial)}</div></TableCell>
-                   <TableCell><Input onClick={(e) => e.stopPropagation()} className='flex text-start text-xs w-[100px]' value={row.contactNo}  /> </TableCell>
-                   
-                 </TableRow> 
-               ))
-
-                
-           }
-
-                  
-                
+              const {
+                ischecked,
+                name,
+                address,
+                type,
+                category,
+                cityProvince,
+                cityId,
+                description,
+                email,
+                websiteAndorFbPage,
+                landmark,
+                mustTry,
+                storeHours,
+                role,
+                coordinates,
+                coordsSpatial,
+                contactNo
+              } = row
+              return (
+                <TableRow onClick={() => console.log('hi')}>  
+                  <TableCell><Input
+                    className='flex text-start text-xs w-[20px]'
+                    type="checkbox"
+                    checked={ischecked}
+                  />
+                  </TableCell>
+                  <TableCell>{ name }</TableCell>
+                  <TableCell>{ address }</TableCell>
+                  <TableCell>{ type }</TableCell>
+                  <TableCell>{ category }</TableCell> 
+                  <TableCell>{ cityProvince }</TableCell>
+                  <TableCell>{ cityId }</TableCell>
+                  <TableCell>{ description }</TableCell>
+                  <TableCell>{ email }</TableCell>
+                  <TableCell>{ websiteAndorFbPage }</TableCell>
+                  <TableCell>{ landmark } </TableCell>
+                  <TableCell>{ mustTry }</TableCell>
+                  <TableCell>{ storeHours }</TableCell>
+                  <TableCell>{ role }</TableCell>
+                  <TableCell>{ coordinates }</TableCell>
+                  <TableCell><div className='text-xs'>{JSON.stringify(coordsSpatial)}</div></TableCell>
+                  <TableCell>{ contactNo }</TableCell>
+                </TableRow>
+              )}
+            )} 
            
          </TableBody> 
        </Table>
