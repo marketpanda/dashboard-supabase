@@ -45,60 +45,60 @@ const DashBoardAuthenticated:React.FC<Props> = ({token, setToken}) => {
                 onLayout={(sizes:number[]) => {
                 document.cookie = `react-resizable-panels:layout=${JSON.stringify(sizes)}`}}>
                 <ResizablePanel
-                defaultSize={20}
-                collapsible={true}
-                maxSize={20}
-                minSize={5}
-                collapsedSize={4} 
-                onCollapse={() => {
-                    setIsCollapsed(true)
-                    document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`
-                }}
-                onExpand={() => {
-                    setIsCollapsed(false)
-                    document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`
-                }}
-                className={cn( isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
+                    defaultSize={20}
+                    collapsible={true}
+                    maxSize={20}
+                    minSize={5}
+                    collapsedSize={4} 
+                    onCollapse={() => {
+                        setIsCollapsed(true)
+                        document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(true)}`
+                    }}
+                    onExpand={() => {
+                        setIsCollapsed(false)
+                        document.cookie = `react-resizable-panels:collapsed=${JSON.stringify(false)}`
+                    }}
+                    className={cn( isCollapsed && "min-w-[50px] transition-all duration-300 ease-in-out")}
                 >
-                <div className='text-xs'>Welcome back <pre>{ JSON.stringify(stringToken) }</pre></div>
-                <button onClick={logout}>Logout</button>
-                <Navbar isCollapsed={isCollapsed} links={[
-                    {
-                    location: "/home",
-                    title: "home",
-                    label: "Bulk Upload",
-                    icon: Inbox,
-                    variant: "ghost"
-                    },
-                    {
-                    location: "/pending",
-                    title: "bulkPendingImages",
-                    label: "Image Upload Pending",
-                    icon: Images,
-                    variant: "ghost"
-                    },
-                    {
-                    location: "/places",
-                    title: "places",
-                    label: "Places",
-                    icon: MapIcon,
-                    variant: "ghost"
-                    },
-                    {
-                    location: "/rentals",
-                    title: "rentals",
-                    label: "Rentals",
-                    icon: HomeIcon,
-                    variant: "ghost"
-                    },
-                    {
-                    location: "/profiles",
-                    title: "profiles",
-                    label: "Profiles",
-                    icon: Users2,
-                    variant: "ghost"
-                    },
-                ]} /> 
+                    <div className='text-xs'>Welcome back <pre>{ JSON.stringify(stringToken) }</pre></div>
+                    <button onClick={logout}>Logout</button>
+                    <Navbar isCollapsed={isCollapsed} links={[
+                        {
+                        location: "/home",
+                        title: "home",
+                        label: "Bulk Upload",
+                        icon: Inbox,
+                        variant: "ghost"
+                        },
+                        {
+                        location: "/pending",
+                        title: "bulkPendingImages",
+                        label: "Image Upload Pending",
+                        icon: Images,
+                        variant: "ghost"
+                        },
+                        {
+                        location: "/places",
+                        title: "places",
+                        label: "Places",
+                        icon: MapIcon,
+                        variant: "ghost"
+                        },
+                        {
+                        location: "/rentals",
+                        title: "rentals",
+                        label: "Rentals",
+                        icon: HomeIcon,
+                        variant: "ghost"
+                        },
+                        {
+                        location: "/profiles",
+                        title: "profiles",
+                        label: "Profiles",
+                        icon: Users2,
+                        variant: "ghost"
+                        },
+                    ]} /> 
                 </ResizablePanel>
 
                 <ResizableHandle withHandle />

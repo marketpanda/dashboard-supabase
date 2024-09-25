@@ -36,9 +36,9 @@ const Places = () => {
         const data = response.data
 
         if (!data) return
-        if (data) setPlaces(data) 
+        setPlaces(data)  
 
-        setPlaces(data)
+        console.log(places)
       } catch (error) {
         console.log(error)
       }
@@ -49,12 +49,13 @@ const Places = () => {
 
   return (
     <> 
-      {
-        places &&  <>
+      <div className="bg-gray-100 h-[700px] overflow-x-scroll">
+      { places &&
+        <>
         <Table>
          <TableHeader>
            <TableRow>
-             <TableHead>Checked</TableHead>
+             <TableHead> </TableHead>
              <TableHead>Name of Place</TableHead>
              {/* <TableHead>User Id</TableHead>  */}
              <TableHead>Address</TableHead>
@@ -83,7 +84,6 @@ const Places = () => {
          <TableBody>
            {
              places && places.map((row:any, _index:number) => {
-
               const {
                 ischecked,
                 name,
@@ -101,7 +101,7 @@ const Places = () => {
                 role,
                 coordinates,
                 coordsSpatial,
-                contactNo
+                contactNumber
               } = row
               return (
                 <TableRow onClick={() => console.log('hi')}>  
@@ -126,7 +126,7 @@ const Places = () => {
                   <TableCell>{ role }</TableCell>
                   <TableCell>{ coordinates }</TableCell>
                   <TableCell><div className='text-xs'>{JSON.stringify(coordsSpatial)}</div></TableCell>
-                  <TableCell>{ contactNo }</TableCell>
+                  <TableCell>{ contactNumber }</TableCell>
                 </TableRow>
               )}
             )} 
@@ -135,8 +135,9 @@ const Places = () => {
        </Table>
        
       
-     </> 
+        </> 
       }
+      </div>
     </>
   )
 }
